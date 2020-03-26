@@ -29,13 +29,17 @@ export class CategoryComponent implements OnInit {
     this.dataSource.sort = this.sort;
   } // tri
   constructor(private categoryService: CategoryService, private matDialog: MatDialog) {
-    this.length = this.categoryService.input.length; // Affectation du nombre de ligne du tableau
+    this.updateData();
+  }
+
+  updateData() {
+    this.length = this.categoryService.categories.length; // Affectation du nombre de ligne du tableau
     // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.categoryService.input.length; i++) {
+    for (let i = 0; i < this.categoryService.categories.length; i++) {
        // tslint:disable-next-line: no-string-literal
-       this.categoryService.input[i]['Action'] = ' '; // ajout de l'espace entre les deux boutons
+       this.categoryService.categories[i]['Action'] = ' '; // ajout de l'espace entre les deux boutons
     }
-    this.dataSource = new MatTableDataSource(this.categoryService.input); // Remplissage du tableau par les données
+    this.dataSource = new MatTableDataSource(this.categoryService.categories); // Remplissage du tableau par les données
   }
 
   ngOnInit(): void {
@@ -63,6 +67,7 @@ export class CategoryComponent implements OnInit {
       (data) => {
         if (data) {
           if (data.action === 1) {
+           
           }
         }
       }

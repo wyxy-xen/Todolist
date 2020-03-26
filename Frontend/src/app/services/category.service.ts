@@ -5,12 +5,20 @@ import { Category } from '../models/category.model';
   providedIn: 'root'
 })
 export class CategoryService {
-  input: Category[] = [
+  categories: Category[] = [
     new Category('stretching', 'personnel', 'hsnsbvsgdhgfdv'),
     new Category('musculation', 'personnel', 'hsnsbvsgdhgfdv'),
     new Category('footing', 'personnel', 'hsnsbvsgdhgfdv'),
     new Category('football', 'personnel', 'hsnsbvsgdhgfdv'),
-    new Category('kung fu', 'personnel', 'hsnsbvsgdhgfdv')
+    new Category('kung fu', 'personnel')
   ];
   constructor() { }
+
+  getCategories() {
+    return this.categories;
+  }
+
+  addCategory(category: Category) {
+    this.categories.push(category);
+  }
 }

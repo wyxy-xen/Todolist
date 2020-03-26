@@ -1,0 +1,13 @@
+.form-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    justify-items: stretch;
+}
+.photo-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    justify-items: stretch;
+}

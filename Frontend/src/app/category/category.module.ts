@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddCategoryComponent } from './add-category/add-category.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [CategoryComponent, AddCategoryComponent],
@@ -20,7 +21,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatFormFieldModule,
     MatInputModule,
     FlexLayoutModule,
-    MatDialogModule
+    MatDialogModule,
+    FormsModule
   ],
   exports: [MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule],
   providers: [MatDialog],
