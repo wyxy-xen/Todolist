@@ -4,6 +4,9 @@ import { CategoryComponent } from './category/category.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [CategoryComponent],
@@ -11,8 +14,11 @@ import { MatSortModule } from '@angular/material/sort';
     CommonModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FlexLayoutModule
   ],
-  exports: [MatTableModule, MatPaginatorModule, MatSortModule]
+  exports: [MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule]
 })
 export class CategoryModule { }

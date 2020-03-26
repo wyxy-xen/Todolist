@@ -15,10 +15,10 @@ export class CategoryComponent implements OnInit {
   displayedColumns: string[] = ['Nom', 'Type', 'Photo', 'Action']; // les colonnes du tableau
   dataSource = new MatTableDataSource([]); // Data du tableau
   input = [
-    {Nom: 'sport', Type: 'personnel', Photo: 'atarafaga'},
-    {Nom: 'sport', Type: 'personnel', Photo: 'atarafaga'},
-    {Nom: 'sport', Type: 'personnel', Photo: 'atarafaga'},
-    {Nom: 'sport', Type: 'personnel', Photo: 'atarafaga'},
+    {Nom: 'stretching', Type: 'personnel', Photo: 'atarafaga'},
+    {Nom: 'yoga', Type: 'personnel', Photo: 'atarafaga'},
+    {Nom: 'musculation', Type: 'personnel', Photo: 'atarafaga'},
+    {Nom: 'footing', Type: 'personnel', Photo: 'atarafaga'},
     {Nom: 'sport', Type: 'personnel', Photo: 'atarafaga'}
   ];
   private paginator: MatPaginator;
@@ -43,5 +43,9 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  doFilter(value: string) {
+    this.dataSource.filter = value.trim().toLocaleLowerCase();
+  } // fonction permettant de filter le tableau lorsque le client écrit dans la barre de recherche
 
 }
