@@ -1,0 +1,21 @@
+.blue {
+    background-color: #007bff;
+}
+
+.white {
+    color: white;
+}
+
+.black {
+    color: black;
+}
+
+footer {
+    background:#192027;
+    text-align: center;
+    padding: 0.1rem;
+    bottom: 0;
+    margin: 0;
+    flex-shrink: 0;
+    width: 100%;
+}
