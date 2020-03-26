@@ -3,6 +3,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { CategoryService } from 'src/app/services/category.service';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { AddCategoryComponent } from '../add-category/add-category.component';
 
 @Component({
   selector: 'app-category',
@@ -26,7 +28,7 @@ export class CategoryComponent implements OnInit {
     this.sort = content;
     this.dataSource.sort = this.sort;
   } // tri
-  constructor(private categoryService: CategoryService) {
+  constructor(private categoryService: CategoryService, private matDialog: MatDialog) {
     this.length = this.categoryService.input.length; // Affectation du nombre de ligne du tableau
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.categoryService.input.length; i++) {
@@ -42,5 +44,29 @@ export class CategoryComponent implements OnInit {
   doFilter(value: string) {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   } // fonction permettant de filter le tableau lorsque le client écrit dans la barre de recherche
+
+  openModal(dialogConfig: MatDialogConfig) {
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    if (screen.width <= 600) {
+      dialogConfig.width = '99%';
+    } else {
+      dialogConfig.width = '50%';
+    }
+  }
+
+  addCategory() {
+    const dialogConfig = new MatDialogConfig();
+    this.openModal(dialogConfig);
+    const dialogRef = this.matDialog.open(AddCategoryComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          if (data.action === 1) {
+          }
+        }
+      }
+    );
+  }
 
 }
