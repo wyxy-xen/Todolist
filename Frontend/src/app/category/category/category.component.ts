@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-category',
@@ -14,13 +15,7 @@ export class CategoryComponent implements OnInit {
   pageSize = 4; // nombre de ligne maximal par page
   displayedColumns: string[] = ['Nom', 'Type', 'Photo', 'Action']; // les colonnes du tableau
   dataSource = new MatTableDataSource([]); // Data du tableau
-  input = [
-    {Nom: 'stretching', Type: 'personnel', Photo: 'atarafaga'},
-    {Nom: 'yoga', Type: 'personnel', Photo: 'atarafaga'},
-    {Nom: 'musculation', Type: 'personnel', Photo: 'atarafaga'},
-    {Nom: 'footing', Type: 'personnel', Photo: 'atarafaga'},
-    {Nom: 'sport', Type: 'personnel', Photo: 'atarafaga'}
-  ];
+
   private paginator: MatPaginator;
   private sort: any;
   @ViewChild(MatPaginator, { static: false }) set matPaginator(mp: MatPaginator) {
@@ -31,14 +26,14 @@ export class CategoryComponent implements OnInit {
     this.sort = content;
     this.dataSource.sort = this.sort;
   } // tri
-  constructor() {
-    this.length = this.input.length; // Affectation du nombre de ligne du tableau
+  constructor(private categoryService: CategoryService) {
+    this.length = this.categoryService.input.length; // Affectation du nombre de ligne du tableau
     // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.input.length; i++) {
+    for (let i = 0; i < this.categoryService.input.length; i++) {
        // tslint:disable-next-line: no-string-literal
-       this.input[i]['Action'] = ' '; // ajout de l'espace entre les deux boutons
+       this.categoryService.input[i]['Action'] = ' '; // ajout de l'espace entre les deux boutons
     }
-    this.dataSource = new MatTableDataSource(this.input); // Remplissage du tableau par les données
+    this.dataSource = new MatTableDataSource(this.categoryService.input); // Remplissage du tableau par les données
   }
 
   ngOnInit(): void {
