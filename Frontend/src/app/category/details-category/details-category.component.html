@@ -1,0 +1,29 @@
+<div id="modal-content-wrapper">
+    <header id="modal-header">
+        <h3>Détails de la catégorie</h3>
+    </header>
+    <br>
+        <section id="modal-body">
+            <div class = "photo-group">
+                <img src="foo.jpg">
+            </div>
+            <div class = "group-info">
+                <div class="group-nom">
+                    <label><strong>Nom</strong>: </label>
+                    &nbsp;
+                    <label> {{nomCategory}}</label>
+                </div>
+                <hr>
+                <div class="group-type">
+                    <label><strong>Type</strong>: </label>
+                    &nbsp;
+                    <label> {{typeCategory}}</label>
+                </div>
+            </div>
+        </section>
+        <footer id="modal-footer">
+            <br>
+            <button type="button" class="btn btn-danger float-right" (click)="closeModal()">Annuler</button>
+        </footer>
+ 
+</div>

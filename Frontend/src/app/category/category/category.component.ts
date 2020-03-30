@@ -7,6 +7,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddCategoryComponent } from '../add-category/add-category.component';
 import { DeleteCategoryComponent } from '../delete-category/delete-category.component';
 import { EditCategoryComponent } from '../edit-category/edit-category.component';
+import { DetailsCategoryComponent } from '../details-category/details-category.component';
 
 @Component({
   selector: 'app-category',
@@ -113,5 +114,23 @@ export class CategoryComponent implements OnInit {
       }
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
   }// méthode permettant d'ouvrir le composant EditCategory et de modifier la catégorie après la fermétrure de fenetre popup
+
+  detailsCategory(index) {
+    const dialogConfig = new MatDialogConfig();
+    this.openModal(dialogConfig);
+    dialogConfig.data = {data: index};
+    const dialogRef = this.matDialog.open(DetailsCategoryComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          if (data.action === 1) {
+            this.updateData(); // mise à jour de la base de données
+            this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+            this.dataSource.sort = this.sort; // mise à jour de tri
+          }
+        }
+      }
+    ); // exécuter la fonction callback après la fermeture de la fenetre popup
+  }
 
 }

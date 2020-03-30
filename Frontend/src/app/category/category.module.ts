@@ -12,9 +12,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { DeleteCategoryComponent } from './delete-category/delete-category.component';
 import { EditCategoryComponent } from './edit-category/edit-category.component';
+import { DetailsCategoryComponent } from './details-category/details-category.component';
 
 @NgModule({
-  declarations: [CategoryComponent, AddCategoryComponent, DeleteCategoryComponent, EditCategoryComponent],
+  declarations: [CategoryComponent, AddCategoryComponent, DeleteCategoryComponent, EditCategoryComponent, DetailsCategoryComponent],
   imports: [
     CommonModule,
     MatPaginatorModule,

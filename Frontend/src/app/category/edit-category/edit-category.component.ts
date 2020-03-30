@@ -22,7 +22,6 @@ export class EditCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     const categories: Category[] = this.categoryService.getCategories();
-    console.log('categories', categories);
     this.nameCategory = categories[this.index]['Nom'];
     this.typeCategory = categories[this.index]['Type'];
   }
