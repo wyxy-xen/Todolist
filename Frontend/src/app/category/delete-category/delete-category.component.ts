@@ -13,7 +13,7 @@ export class DeleteCategoryComponent implements OnInit {
               private categoryService: CategoryService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
                 if (data !== null) {
-                      this.index = data;
+                      this.index = data.data;
                  }
               }
 

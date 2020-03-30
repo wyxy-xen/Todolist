@@ -25,4 +25,8 @@ export class CategoryService {
   deleteCategory(index: number) {
     this.categories.splice(index, 1);
   } // méthode permettant de supprimer une catégorie du tableau de catégories
+
+  editCategory(index: number, category: Category) {
+    this.categories.splice(index, 1, category);
+  } // méthode permettant de modifier une catégorie dans le tableau de catégories
 }

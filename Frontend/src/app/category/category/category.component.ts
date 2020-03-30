@@ -6,6 +6,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddCategoryComponent } from '../add-category/add-category.component';
 import { DeleteCategoryComponent } from '../delete-category/delete-category.component';
+import { EditCategoryComponent } from '../edit-category/edit-category.component';
 
 @Component({
   selector: 'app-category',
@@ -86,7 +87,7 @@ export class CategoryComponent implements OnInit {
       (data) => {
         if (data) {
           if (data.action === 1) {
-            this.dataSource.connect().next(data.data); // mise à jour de la base de données
+            this.updateData(); // mise à jour de la base de données
             this.dataSource.paginator = this.paginator; // mise à jour de la pagination
             this.dataSource.sort = this.sort; // mise à jour de tri
           }
@@ -94,5 +95,23 @@ export class CategoryComponent implements OnInit {
       }
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
   } // méthode permettant d'ouvrir le composant DeleteCategory et de supprimer la catégorie de la liste après la fermétrure de fenetre popup
+
+  editCategory(index) {
+    const dialogConfig = new MatDialogConfig();
+    this.openModal(dialogConfig);
+    dialogConfig.data = {data: index};
+    const dialogRef = this.matDialog.open(EditCategoryComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          if (data.action === 1) {
+            this.updateData(); // mise à jour de la base de données
+            this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+            this.dataSource.sort = this.sort; // mise à jour de tri
+          }
+        }
+      }
+    ); // exécuter la fonction callback après la fermeture de la fenetre popup
+  }// méthode permettant d'ouvrir le composant EditCategory et de modifier la catégorie après la fermétrure de fenetre popup
 
 }
