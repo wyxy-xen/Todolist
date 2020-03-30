@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CategoryService } from 'src/app/services/category.service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddCategoryComponent } from '../add-category/add-category.component';
+import { DeleteCategoryComponent } from '../delete-category/delete-category.component';
 
 @Component({
   selector: 'app-category',
@@ -37,7 +38,7 @@ export class CategoryComponent implements OnInit {
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.categoryService.categories.length; i++) {
        // tslint:disable-next-line: no-string-literal
-       this.categoryService.categories[i]['Action'] = ' '; // ajout de l'espace entre les deux boutons
+       this.categoryService.categories[i]['Action'] = i; // ajout de l'espace entre les deux boutons
     }
     this.dataSource = new MatTableDataSource(this.categoryService.categories); // Remplissage du tableau par les données
   }
@@ -47,7 +48,7 @@ export class CategoryComponent implements OnInit {
 
   doFilter(value: string) {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
-  } // fonction permettant de filter le tableau lorsque le client écrit dans la barre de recherche
+  } // méthode permettant de filter le tableau lorsque le client écrit dans la barre de recherche
 
   openModal(dialogConfig: MatDialogConfig) {
     dialogConfig.disableClose = true;
@@ -57,7 +58,7 @@ export class CategoryComponent implements OnInit {
     } else {
       dialogConfig.width = '50%';
     }
-  }
+  } // méthode permettant d'ouvrir une fentre popup dans la page
 
   addCategory() {
     const dialogConfig = new MatDialogConfig();
@@ -67,11 +68,31 @@ export class CategoryComponent implements OnInit {
       (data) => {
         if (data) {
           if (data.action === 1) {
-           
+            this.dataSource.connect().next(data.data); // mise à jour de la base de données
+            this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+            this.dataSource.sort = this.sort; // mise à jour de tri
           }
         }
       }
-    );
-  }
+    ); // exécuter la fonction callback après la fermeture de la fenetre popup
+  } // méthode permettant d'ouvrir le composant AddCategory et d'ajouter la catégorie à la liste après la ferméture de fenetre popup
+
+  deleteCategory(index) {
+    const dialogConfig = new MatDialogConfig();
+    this.openModal(dialogConfig);
+    dialogConfig.data = {data: index};
+    const dialogRef = this.matDialog.open(DeleteCategoryComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          if (data.action === 1) {
+            this.dataSource.connect().next(data.data); // mise à jour de la base de données
+            this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+            this.dataSource.sort = this.sort; // mise à jour de tri
+          }
+        }
+      }
+    ); // exécuter la fonction callback après la fermeture de la fenetre popup
+  } // méthode permettant d'ouvrir le composant DeleteCategory et de supprimer la catégorie de la liste après la fermétrure de fenetre popup
 
 }

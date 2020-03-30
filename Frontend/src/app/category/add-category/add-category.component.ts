@@ -27,7 +27,7 @@ export class AddCategoryComponent implements OnInit {
      const category = new Category(Nom, Type, Photo);
      this.categoryService.addCategory(category);
      this.dialogRef.close({action: 1, data: this.categoryService.categories});
-  }
+  } // méthode permettant d'ajouter une catégorie à la liste de catégorie
 
   addPhoto() {
 

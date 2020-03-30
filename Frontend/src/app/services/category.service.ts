@@ -16,9 +16,13 @@ export class CategoryService {
 
   getCategories() {
     return this.categories;
-  }
+  } // méthode permettant de récupérer le tableau de catégories
 
   addCategory(category: Category) {
     this.categories.push(category);
-  }
+  } // méthode permettant d'ajouter une catégorie au tableau de catégories
+
+  deleteCategory(index: number) {
+    this.categories.splice(index, 1);
+  } // méthode permettant de supprimer une catégorie du tableau de catégories
 }

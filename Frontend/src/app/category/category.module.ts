@@ -10,9 +10,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddCategoryComponent } from './add-category/add-category.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { DeleteCategoryComponent } from './delete-category/delete-category.component';
 
 @NgModule({
-  declarations: [CategoryComponent, AddCategoryComponent],
+  declarations: [CategoryComponent, AddCategoryComponent, DeleteCategoryComponent],
   imports: [
     CommonModule,
     MatPaginatorModule,
