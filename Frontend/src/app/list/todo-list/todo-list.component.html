@@ -2,6 +2,7 @@
 <button class = "btn btn-sm btn-success float-right" (click) = "addList()" title="Ajouter une catégorie"><i class="fa fa-plus fa-2x"></i></button>
 <br>
 <br>
+<br>
 <div fxLayout fxLayoutAlign="center center" class="form-inline active-cyan-2">
     <i class="fa fa-search fa-2x"></i>
     &nbsp;
@@ -12,6 +13,12 @@
 <br>
 <div class="table-container mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="Checkbox">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+            <td mat-cell *matCellDef="let element">
+                <input type="checkbox" id="scales" name="done-list">
+            </td>
+        </ng-container>
         <ng-container matColumnDef="Nom">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
             <td mat-cell *matCellDef="let element">{{element.Nom}}</td>
@@ -20,9 +27,29 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
             <td mat-cell *matCellDef="let element">{{element.Type}}</td>
         </ng-container>
-        <ng-container matColumnDef="Photo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Photo</th>
-            <td mat-cell *matCellDef="let element">{{element.Photo}}</td>
+        <ng-container matColumnDef="Category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Catégorie</th>
+            <td mat-cell *matCellDef="let element">{{element.Category}}</td>
+        </ng-container>
+        <ng-container matColumnDef="DateDebut">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de début</th>
+            <td mat-cell *matCellDef="let element">{{element.DateDebut | date: 'dd/mm/yyyy'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="DateFin">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de fin</th>
+            <td mat-cell *matCellDef="let element">{{element.DateFin | date: 'dd/mm/yyyy'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Percent">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Pourcentage</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width:{{element.Percent}}%">{{element.Percent}}%</div>
+                  </div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="IsLate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Etat d'avancement</th>
+            <td mat-cell *matCellDef="let element">{{element.IsLate}}</td>
         </ng-container>
         <ng-container matColumnDef="Action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>

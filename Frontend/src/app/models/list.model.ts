@@ -3,21 +3,21 @@ import { Category } from './category.model';
 export class List {
    Nom: string;
    Type: string;
-   Category: Category;
+   Category: string;
    DateDebut: Date;
    DateFin: Date;
-   isDone: boolean;
-   isLate: boolean;
-   percent: number;
-   constructor(Nom: string, Type: string, Category: Category, DateDebut: Date,
-               DateFin: Date, isDone: boolean, isLate: boolean, percent: number) {
+   IsDone: boolean;
+   IsLate: string;
+   Percent: number;
+   constructor(Nom: string, Type: string, Category: string, DateDebut: Date,
+               DateFin: Date, IsDone: boolean, IsLate: string, Percent: number) {
       this.Nom = Nom;
       this.Type = Type;
       this.Category = Category;
       this.DateDebut = DateDebut;
       this.DateFin = DateFin;
-      this.isDone = isDone;
-      this.isLate = isLate;
-      this.percent = percent;
+      this.IsDone = IsDone;
+      this.IsLate = IsLate;
+      this.Percent = Percent;
    }
 }

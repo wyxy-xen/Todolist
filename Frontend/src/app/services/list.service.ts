@@ -8,9 +8,9 @@ import { Category } from '../models/category.model';
 })
 export class ListService {
   lists: List[] = [
-    new List('entretien d\'embauche', spot['0'], new Category('eeee', 'hhhh', 'eeeeee'), new Date(), new Date(), false, false, 100),
-    new List('entretien d\'embauche', spot['1'], new Category('eeee', 'hhhh', 'eeeeee'), new Date(), new Date(), false, false, 50),
-    new List('entretien d\'embauche', spot['0'], new Category('eeee', 'hhhh', 'eeeeee'), new Date(), new Date(), false, false, 0)
+    new List('entretien d\'embauche', spot['0'], 'aaggga', new Date(), new Date(), false, 'en retard', 100),
+    new List('entretien d\'embauche', spot['1'], 'ffagga', new Date(), new Date(), false, 'en avance', 50),
+    new List('entretien d\'embauche', spot['0'], 'ghhhhh', new Date(), new Date(), false, 'en retard', 0)
   ];
   constructor() { }
 

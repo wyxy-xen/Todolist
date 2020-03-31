@@ -7,6 +7,17 @@
   .active-cyan .fa, .active-cyan-2 .fa {
     color: #4dd0e1;
   }
+
+  .islate-case-green {
+    background-color: green;
+    color: white;
+  }
+
+  .islate-case-red {
+    background-color: red;
+    color: white;
+  }
+
   
   .flex {
     display: flex;
