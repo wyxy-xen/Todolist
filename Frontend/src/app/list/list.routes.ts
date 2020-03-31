@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
-import { listRoute } from './list/list.route';
+import { doneListRoute } from './done-list/done-list.route';
+import { todoListRoute } from './todo-list/todo-list.route';
 
-const LIST_ROUTES = [listRoute];
+const LIST_ROUTES = [todoListRoute, doneListRoute];
 
 export const listRoutes: Routes = [
     {

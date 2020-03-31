@@ -1,7 +1,5 @@
-<br>
-<h1 class = "float-left">Liste des catégories</h1>
-<button class = "btn btn-sm btn-success float-right" (click) = "addCategory()" title="Ajouter une catégorie"><i class="fa fa-plus fa-2x"></i></button>
-<br>
+<h1 class = "float-left">Liste de tâches à réaliser</h1>
+<button class = "btn btn-sm btn-success float-right" (click) = "addList()" title="Ajouter une catégorie"><i class="fa fa-plus fa-2x"></i></button>
 <br>
 <br>
 <div fxLayout fxLayoutAlign="center center" class="form-inline active-cyan-2">
@@ -29,13 +27,13 @@
         <ng-container matColumnDef="Action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
             <td mat-cell *matCellDef="let element">
-                <button class="btn btn-xs btn-danger" (click) = "deleteCategory(element.Action)"><i class="fa fa-ban fa-1x"
+                <button class="btn btn-xs btn-danger" (click) = "deleteList(element.Action)"><i class="fa fa-ban fa-1x"
                         title="Supprimer la catégorie"></i></button>
                 &nbsp;
-                <button class="btn btn-xs btn-primary" (click) = "editCategory(element.Action)"><i class="fa fa-pencil fa-1x"
+                <button class="btn btn-xs btn-primary" (click) = "editList(element.Action)"><i class="fa fa-pencil fa-1x"
                         title="Editer la catégorie"></i></button>
                 &nbsp;
-                <button class="btn btn-xs btn-info" (click) = "detailsCategory(element.Action)"><i class="fa fa-search fa-1x"
+                <button class="btn btn-xs btn-info" (click) = "detailsList(element.Action)"><i class="fa fa-search fa-1x"
                         title="Consulter la catégorie"></i></button>
             </td>
         </ng-container>
@@ -45,4 +43,3 @@
     <mat-paginator [pageSizeOptions]="[3, 10, 15]" [length]="length" [pageSize]="pageSize" showFirstLastButtons>
     </mat-paginator>
 </div>
-<br>

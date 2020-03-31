@@ -11,6 +11,7 @@ import { CategoryModule } from './category/category.module';
 import { ListModule } from './list/list.module';
 import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -27,9 +28,10 @@ import { SignupModule } from './signup/signup.module';
     CategoryModule,
     ListModule,
     LoginModule,
-    SignupModule
+    SignupModule,
+    NgbModule
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

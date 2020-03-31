@@ -9,6 +9,7 @@ import { categoryRoutes } from './category/category.routes';
 
 const routes: Routes = [
   homeRoute,
+  ...listRoutes,
   ...categoryRoutes,
   ...signupRoutes,
   ...loginRoutes,
