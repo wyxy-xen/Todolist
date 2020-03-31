@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ListService } from 'src/app/services/list.service';
+import { AddListComponent } from '../add-list/add-list.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -54,7 +55,7 @@ export class TodoListComponent implements OnInit {
     if (screen.width <= 600) {
       dialogConfig.width = '99%';
     } else {
-      dialogConfig.width = '50%';
+      dialogConfig.width = '60%';
     }
   } // méthode permettant d'ouvrir une fentre popup dans la page
 
@@ -67,7 +68,20 @@ export class TodoListComponent implements OnInit {
   }
 
   addList() {
-
+    const dialogConfig = new MatDialogConfig();
+    this.openModal(dialogConfig);
+    const dialogRef = this.matDialog.open(AddListComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          if (data.action === 1) {
+            this.dataSource.connect().next(data.data); // mise à jour de la base de données
+            this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+            this.dataSource.sort = this.sort; // mise à jour de tri
+          }
+        }
+      }
+    ); // exécuter la fonction callback après la fermeture de la fenetre popup
   }
 
   deleteList(index) {

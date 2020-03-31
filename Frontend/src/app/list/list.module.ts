@@ -8,9 +8,15 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DeleteListComponent } from './delete-list/delete-list.component';
+import { DetailsListComponent } from './details-list/details-list.component';
+import { EditListComponent } from './edit-list/edit-list.component';
+import { AddListComponent } from './add-list/add-list.component';
+import { FormsModule } from '@angular/forms';
+import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [DoneListComponent, TodoListComponent],
+  declarations: [DoneListComponent, TodoListComponent, DeleteListComponent, DetailsListComponent, EditListComponent, AddListComponent],
   imports: [
     CommonModule,
     MatTableModule,
@@ -19,6 +25,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatFormFieldModule,
     MatInputModule,
     FlexLayoutModule,
+    FormsModule,
+    NgbModule
   ],
   exports: [MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule]
 })
