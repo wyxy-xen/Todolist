@@ -1,1 +1,17 @@
-<p>delete-list works!</p>
+<div id="modal-content-wrapper">
+    <header id="modal-header">
+        <h3>Supprimer une tâche</h3>
+    </header>
+    <br>
+    <form #f="ngForm" (ngSubmit)="onDeleteList()">
+        <section id="modal-body">
+            <label>Etes-vous certain de vouloir supprimer cette tâche ?</label>
+        </section>
+        <footer id="modal-footer">
+            <br>
+            <button type="button" class="btn btn-danger float-left" (click)="closeModal()">Annuler</button>
+            <button type="submit" class="btn btn-success float-right">Supprimer</button>
+        </footer>
+    </form>
+</div>
+

@@ -14,6 +14,7 @@ import { EditListComponent } from './edit-list/edit-list.component';
 import { AddListComponent } from './add-list/add-list.component';
 import { FormsModule } from '@angular/forms';
 import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [DoneListComponent, TodoListComponent, DeleteListComponent, DetailsListComponent, EditListComponent, AddListComponent],
@@ -25,9 +26,11 @@ import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatFormFieldModule,
     MatInputModule,
     FlexLayoutModule,
+    MatDialogModule,
     FormsModule,
     NgbModule
   ],
-  exports: [MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule]
+  exports: [MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule],
+  providers: [MatDialog]
 })
 export class ListModule { }

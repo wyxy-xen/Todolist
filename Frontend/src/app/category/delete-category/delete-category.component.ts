@@ -22,11 +22,12 @@ export class DeleteCategoryComponent implements OnInit {
 
   closeModal() {
     this.dialogRef.close();
-  }
+  } // méthode permettant de fermer la fenetre popup
 
   onDeleteCategory() {
     this.categoryService.deleteCategory(this.index);
     this.dialogRef.close({action: 1, data: this.categoryService.categories});
-  }
+  } // méthode permettant de supprimer une catégorie de la liste de catégories dans le service
+    // et d'envoyer la nouvelle liste au composant parent
 
 }

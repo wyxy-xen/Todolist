@@ -27,7 +27,7 @@ export class CategoryComponent implements OnInit {
     this.paginator = mp;
     this.dataSource.paginator = this.paginator;
   } // pagination
-  @ViewChild(MatSort, { static: true }) set content(content: ElementRef) {
+  @ViewChild(MatSort, { static: false}) set content(content: ElementRef) {
     this.sort = content;
     this.dataSource.sort = this.sort;
   } // tri
@@ -47,6 +47,8 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+ 
 
   doFilter(value: string) {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
