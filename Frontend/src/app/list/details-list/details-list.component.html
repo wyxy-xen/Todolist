@@ -1,1 +1,54 @@
-<p>details-list works!</p>
+<div id="modal-content-wrapper">
+    <header id="modal-header">
+        <h3>Détails de la tâche</h3>
+    </header>
+    <br>
+    <section id="modal-body">
+        <div class="group-nom">
+            <label><strong>Nom</strong>: </label>
+            &nbsp;
+            <label> {{nomList}}</label>
+        </div>
+        <hr>
+        <div class="group-type">
+            <label><strong>Type</strong>: </label>
+            &nbsp;
+            <label> {{typeList}}</label>
+        </div>
+        <hr>
+        <div class="group-category">
+            <label><strong>Catégorie</strong>: </label>
+            &nbsp;
+            <label> {{categoryList}}</label>
+        </div>
+        <hr>
+        <div class="group-dateDebut">
+            <label><strong>Date de début</strong>: </label>
+            &nbsp;
+            <label> {{dateDebutList | date: 'dd/MM/yyyy'}}</label>
+        </div>
+        <hr>
+        <div class="group-dateFin">
+            <label><strong>Date de fin</strong>: </label>
+            &nbsp;
+            <label> {{dateFinList | date: 'dd/MM/yyyy'}}</label>
+        </div>
+        <hr>
+        <div class="group-dateFin">
+            <label><strong>Etat d'avancement</strong>: </label>
+            &nbsp;
+            <label> {{isLateList}}</label>
+        </div>
+        <hr>
+        <div class="group-percent">
+            <label><strong>Pourcentage</strong>: </label>
+            &nbsp;
+            <label> {{percentList}} %</label>
+        </div>
+    </section>
+    <footer id="modal-footer">
+        <br>
+        <button type="button" class="btn btn-danger float-right" (click)="closeModal()">Annuler</button>
+    </footer>
+
+</div>

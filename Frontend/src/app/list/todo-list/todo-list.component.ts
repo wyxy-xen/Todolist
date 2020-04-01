@@ -7,6 +7,7 @@ import { ListService } from 'src/app/services/list.service';
 import { AddListComponent } from '../add-list/add-list.component';
 import { DeleteListComponent } from '../delete-list/delete-list.component';
 import { EditListComponent } from '../edit-list/edit-list.component';
+import { DetailsListComponent } from '../details-list/details-list.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -130,7 +131,22 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   detailsList(index) {
-
-  }
+    const dialogConfig = new MatDialogConfig();
+    this.openModal(dialogConfig);
+    dialogConfig.data = {data: index};
+    const dialogRef = this.matDialog.open(DetailsListComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          if (data.action === 1) {
+            this.updateData(); // mise à jour de la base de données
+            this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+            this.dataSource.sort = this.sort; // mise à jour de tri
+          }
+        }
+      }
+    ); // exécuter la fonction callback après la fermeture de la fenetre popup
+  } // méthode permettant d'ouvrir le composant DetailsList
+  // et d'afficher les détails de la tache après la fermétrure de fenetre popup
 
 }

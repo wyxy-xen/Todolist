@@ -133,6 +133,7 @@ export class CategoryComponent implements OnInit {
         }
       }
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
-  }
+  } // méthode permettant d'ouvrir le composant DetailsCategory
+    // et d'afficher les détails de la catégorie après la fermétrure de fenetre popup
 
 }
