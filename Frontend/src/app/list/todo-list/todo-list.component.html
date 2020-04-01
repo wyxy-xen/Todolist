@@ -34,11 +34,11 @@
         </ng-container>
         <ng-container matColumnDef="DateDebut">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de début</th>
-            <td mat-cell *matCellDef="let element">{{element.DateDebut | date: 'dd/mm/yyyy'}}</td>
+            <td mat-cell *matCellDef="let element">{{element.DateDebut | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
         <ng-container matColumnDef="DateFin">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de fin</th>
-            <td mat-cell *matCellDef="let element">{{element.DateFin | date: 'dd/mm/yyyy'}}</td>
+            <td mat-cell *matCellDef="let element">{{element.DateFin | date: 'dd/MM/yyyy'}}</td>
         </ng-container>
         <ng-container matColumnDef="Percent">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Pourcentage</th>

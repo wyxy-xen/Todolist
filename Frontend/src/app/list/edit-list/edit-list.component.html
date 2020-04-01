@@ -1,1 +1,63 @@
-<p>edit-list works!</p>
+<div id="modal-content-wrapper">
+    <header id="modal-header">
+        <h3>Editer une tâche</h3>
+    </header>
+    <br>
+    <form #f="ngForm" (ngSubmit)="onEditList(f.value)">
+        <section id="modal-body">
+            <div class="form-group">
+                <label class="control-label">Nom: </label>
+                &nbsp;&nbsp;
+                <input type="text" class="form-control form-control-sm" name="Nom" [(ngModel)] = "NomList"
+                    placeholder="Entrez le nom de tâche" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Type: </label>
+                &nbsp;&nbsp;
+                <select class="form-control form-control-sm" name="Type" [(ngModel)] = "typeList" required>
+                    <option>ponctuel</option>
+                    <option>au long cours</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Catégorie: </label>
+                &nbsp;&nbsp;
+                <select class="form-control form-control-sm" name="Category" [(ngModel)] = "CategoryList" required>
+                    <option *ngFor="let list of lists">{{list.Category}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label" style="width: 30%;">Date de début:</label>
+                <input #datestart id="start_date" class="form-control" placeholder="yyyy-mm-dd" name="dp3" ngbDatepicker
+                    #dp3="ngbDatepicker" [(ngModel)] = "DateDebutList" required>
+                &nbsp;
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="dp3.toggle()" type="button"></button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" style="width: 30%;">Date de fin: </label>
+                &nbsp;&nbsp;
+                <input #datestart id="fin_date" class="form-control" placeholder="yyyy-mm-dd" name="dp4" ngbDatepicker
+                    #dp4="ngbDatepicker" [(ngModel)] = "DateFinList" required>
+                &nbsp;
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="dp4.toggle()" type="button"></button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Pourcentage: </label>
+                &nbsp;&nbsp;
+                <input type="text" class="form-control form-control-sm" name="Percent" [(ngModel)] = "PercentList"
+                    placeholder="Entrez le pourcentage d'avancement de tâche" required>
+                &nbsp;
+                <label>%</label>
+            </div>
+        </section>
+        <footer id="modal-footer">
+            <br>
+            <button type="button" class="btn btn-danger float-left" (click)="closeModal()">Annuler</button>
+            <button type="submit" class="btn btn-success float-right" [disabled] = "!f.valid">Modifier</button>
+        </footer>
+    </form>
+</div>

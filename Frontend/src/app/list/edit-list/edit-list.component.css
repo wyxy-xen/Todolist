@@ -1,0 +1,12 @@
+.form-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: start;
+    justify-items: start;
+    align-items: stretch;
+}
+
+h3 {
+    font-size: calc(24px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+}
