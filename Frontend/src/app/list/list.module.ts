@@ -13,8 +13,9 @@ import { DetailsListComponent } from './details-list/details-list.component';
 import { EditListComponent } from './edit-list/edit-list.component';
 import { AddListComponent } from './add-list/add-list.component';
 import { FormsModule } from '@angular/forms';
-import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [DoneListComponent, TodoListComponent, DeleteListComponent, DetailsListComponent, EditListComponent, AddListComponent],
@@ -28,7 +29,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     FlexLayoutModule,
     MatDialogModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    MatCheckboxModule
   ],
   exports: [MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule],
   providers: [MatDialog]

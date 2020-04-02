@@ -29,4 +29,11 @@ export class ListService {
   editList(index: number, list: List) {
     this.lists.splice(index, 1, list);
   } // méthode permettant de modifier une tache dans le tableau de taches
+
+  changeToDoneList(list: List) {
+    const index = this.lists.indexOf(list);
+    const oneList = this.lists[index];
+    oneList.IsDone = true;
+    this.lists.splice(index, 1, oneList);
+  } // méthode permettant de rendre la tache à réaliser une tache réalisée
 }

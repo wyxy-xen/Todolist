@@ -8,6 +8,7 @@ import { AddListComponent } from '../add-list/add-list.component';
 import { DeleteListComponent } from '../delete-list/delete-list.component';
 import { EditListComponent } from '../edit-list/edit-list.component';
 import { DetailsListComponent } from '../details-list/details-list.component';
+import { List } from 'src/app/models/list.model';
 
 @Component({
   selector: 'app-todo-list',
@@ -18,7 +19,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   length: number; // nombre de ligne  du tableau
   pageSize = 4; // nombre de ligne maximal par page
   displayedColumns: string[] = ['Checkbox', 'Nom', 'Type', 'Category', 'DateDebut',
-                                'DateFin', 'Percent', 'IsLate', 'Action']; // les colonnes du tableau
+    'DateFin', 'Percent', 'IsLate', 'Action']; // les colonnes du tableau
   dataSource = new MatTableDataSource([]); // Data du tableau
 
   private paginator: MatPaginator;
@@ -31,7 +32,18 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     this.sort = content;
     this.dataSource.sort = this.sort;
   } // tri
-  constructor(private listService: ListService, private matDialog: MatDialog) { }
+  constructor(private listService: ListService,
+              private matDialog: MatDialog) {
+  }
+
+  functionToMaintainCheckedList(list) {
+     console.log(list);
+     this.listService.changeToDoneList(list);
+     setTimeout(() => {
+      this.updateData();
+     }, 2000);
+  }
+
 
   ngOnInit(): void {
     this.updateData();
@@ -39,20 +51,26 @@ export class TodoListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => {
-        this.paginator.pageIndex = 0;
-        this.paginator.pageSize = this.pageSize;
+      this.paginator.pageIndex = 0;
+      this.paginator.pageSize = this.pageSize;
     });
   }
 
   updateData() {
-    this.length = this.listService.lists.length; // Affectation du nombre de ligne du tableau
-    // tslint:disable-next-line: prefer-for-of
+    const newLists: List[] = [];
     for (let i = 0; i < this.listService.lists.length; i++) {
-       // tslint:disable-next-line: no-string-literal
-       this.listService.lists[i]['Action'] = i; // ajout de l'espace entre les deux boutons
-       this.listService.lists[i]['Checkbox'] = '';
+        if (this.listService.lists[i].IsDone === false) {
+          newLists.push(this.listService.lists[i]);
+        }
     }
-    this.dataSource = new MatTableDataSource(this.listService.lists); // Remplissage du tableau par les données
+    for (let j = 0; j < newLists.length; j++) {
+      // tslint:disable-next-line: no-string-literal
+      newLists[j]['Action'] = j; // ajout de l'espace entre les deux boutons
+      newLists[j]['Checkbox'] = '';
+    }
+    this.dataSource = new MatTableDataSource(newLists); // Remplissage du tableau par les données
+    this.length = newLists.length; // Affectation du nombre de ligne du tableau
+    // tslint:disable-next-line: prefer-for-of
   }
 
   doFilter(value: string) {
@@ -97,7 +115,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   deleteList(index) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = {data: index};
+    dialogConfig.data = { data: index };
     const dialogRef = this.matDialog.open(DeleteListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {
@@ -110,12 +128,13 @@ export class TodoListComponent implements OnInit, AfterViewInit {
         }
       }
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
-  }
+  } // méthode permettant d'ouvrir le composant DeleteList
+  // et de supprimer une tache après la fermétrure de fenetre popup
 
   editList(index) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = {data: index};
+    dialogConfig.data = { data: index };
     const dialogRef = this.matDialog.open(EditListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {
@@ -128,12 +147,13 @@ export class TodoListComponent implements OnInit, AfterViewInit {
         }
       }
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
-  }
+  } // méthode permettant d'ouvrir le composant EditList
+  // et d'éditer une tache après la fermétrure de fenetre popup
 
   detailsList(index) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = {data: index};
+    dialogConfig.data = { data: index };
     const dialogRef = this.matDialog.open(DetailsListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {

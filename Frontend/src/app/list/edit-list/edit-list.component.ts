@@ -59,10 +59,11 @@ export class EditListComponent implements OnInit {
     const Category = value.Category;
     const DateDebut = this.changeNgbDateStructToDate(value.dp3);
     const DateFin = this.changeNgbDateStructToDate(value.dp4);
-    const IsDone = false;
+    const IsDone = this.lists[this.index]['IsDone'];
     const IsLate = this.lists[this.index]['IsLate'];
     const Percent = value.Percent;
     const list = new List(Nom, Type, Category, DateDebut, DateFin, IsDone, IsLate, Percent);
+    console.log(list);
     this.listService.editList(this.index, list);
     this.dialogRef.close({ action: 1, data: this.listService.lists });
   } // méthode permettant d'ajouter une catégorie à la liste de catégorie
