@@ -20,13 +20,16 @@ export class ListService {
 
   addList(list: List) {
     this.lists.push(list);
+    console.log(this.lists);
   } // méthode permettant d'ajouter une catégorie au tableau de taches
 
-  deleteList(index: number) {
+  deleteList(list: List) {
+    const index = this.lists.indexOf(list);
     this.lists.splice(index, 1);
   } // méthode permettant de supprimer une tache du tableau de taches
 
-  editList(index: number, list: List) {
+  editList(exList: List, list: List) {
+    const index = this.lists.indexOf(exList);
     this.lists.splice(index, 1, list);
   } // méthode permettant de modifier une tache dans le tableau de taches
 

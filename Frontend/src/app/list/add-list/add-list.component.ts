@@ -34,6 +34,7 @@ export class AddListComponent implements OnInit {
     const dateFin = this.changeFormatDate(value.dp4);
     const percent = value.Percent;
     const list = new List(nom, type, category, dateDebut, dateFin, false, 'en avance', percent);
+    console.log('list', list);
     this.listService.addList(list);
     this.dialogRef.close({action: 1, data: this.listService.lists});
   }

@@ -103,7 +103,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
       (data) => {
         if (data) {
           if (data.action === 1) {
-            this.dataSource.connect().next(data.data); // mise à jour de la base de données
+            this.updateData();  // mise à jour de la base de données
             this.dataSource.paginator = this.paginator; // mise à jour de la pagination
             this.dataSource.sort = this.sort; // mise à jour de tri
           }
@@ -112,10 +112,10 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
   } // méthode permettant d'ouvrir le composant AddList et d'ajouter la tache à la liste après la ferméture de fenetre popup
 
-  deleteList(index) {
+  deleteList(list) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: index };
+    dialogConfig.data = { data: list };
     const dialogRef = this.matDialog.open(DeleteListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {
@@ -131,10 +131,10 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   } // méthode permettant d'ouvrir le composant DeleteList
   // et de supprimer une tache après la fermétrure de fenetre popup
 
-  editList(index) {
+  editList(list) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: index };
+    dialogConfig.data = { data: list };
     const dialogRef = this.matDialog.open(EditListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {
@@ -150,10 +150,10 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   } // méthode permettant d'ouvrir le composant EditList
   // et d'éditer une tache après la fermétrure de fenetre popup
 
-  detailsList(index) {
+  detailsList(list) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: index };
+    dialogConfig.data = { data: list };
     const dialogRef = this.matDialog.open(DetailsListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {

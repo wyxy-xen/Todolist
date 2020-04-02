@@ -17,25 +17,26 @@ export class EditListComponent implements OnInit {
   DateDebutList: NgbDateStruct;
   DateFinList: NgbDateStruct;
   PercentList: number;
-  index: number;
+  list: List;
   lists: List[];
 
   constructor(private dialogRef: MatDialogRef<EditListComponent>,
               private listService: ListService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
       if (data !== null) {
-        this.index = data.data;
+        this.list = data.data;
       }
     }
 
   ngOnInit(): void {
     this.lists = this.listService.getLists();
-    this.NomList = this.lists[this.index]['Nom'];
-    this.typeList = this.lists[this.index]['Type'];
-    this.CategoryList = this.lists[this.index]['Category'];
-    this.DateDebutList = this.changeDateToNgbDateStruct(this.lists[this.index]['DateDebut']);
-    this.DateFinList = this.changeDateToNgbDateStruct(this.lists[this.index]['DateFin']);
-    this.PercentList = this.lists[this.index]['Percent'];
+    const index = this.lists.indexOf(this.list);
+    this.NomList = this.lists[index]['Nom'];
+    this.typeList = this.lists[index]['Type'];
+    this.CategoryList = this.lists[index]['Category'];
+    this.DateDebutList = this.changeDateToNgbDateStruct(this.lists[index]['DateDebut']);
+    this.DateFinList = this.changeDateToNgbDateStruct(this.lists[index]['DateFin']);
+    this.PercentList = this.lists[index]['Percent'];
   }
 
   changeDateToNgbDateStruct(date: Date): NgbDateStruct {
@@ -54,17 +55,17 @@ export class EditListComponent implements OnInit {
   }
 
   onEditList(value) {
+    const index = this.lists.indexOf(this.list);
     const Nom = value.Nom;
     const Type = value.Type;
     const Category = value.Category;
     const DateDebut = this.changeNgbDateStructToDate(value.dp3);
     const DateFin = this.changeNgbDateStructToDate(value.dp4);
-    const IsDone = this.lists[this.index]['IsDone'];
-    const IsLate = this.lists[this.index]['IsLate'];
+    const IsDone = this.lists[index]['IsDone'];
+    const IsLate = this.lists[index]['IsLate'];
     const Percent = value.Percent;
     const list = new List(Nom, Type, Category, DateDebut, DateFin, IsDone, IsLate, Percent);
-    console.log(list);
-    this.listService.editList(this.index, list);
+    this.listService.editList(this.list, list);
     this.dialogRef.close({ action: 1, data: this.listService.lists });
   } // méthode permettant d'ajouter une catégorie à la liste de catégorie
 

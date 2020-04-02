@@ -58,13 +58,13 @@
         <ng-container matColumnDef="Action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
             <td mat-cell *matCellDef="let element">
-                <button class="btn btn-xs btn-danger" (click)="deleteList(element.Action)"><i class="fa fa-ban fa-1x"
+                <button class="btn btn-xs btn-danger" (click)="deleteList(element)"><i class="fa fa-ban fa-1x"
                         title="Supprimer la la tâche"></i></button>
                 &nbsp;
-                <button class="btn btn-xs btn-primary" (click)="editList(element.Action)"><i class="fa fa-pencil fa-1x"
+                <button class="btn btn-xs btn-primary" (click)="editList(element)"><i class="fa fa-pencil fa-1x"
                         title="Editer la la tâche"></i></button>
                 &nbsp;
-                <button class="btn btn-xs btn-info" (click)="detailsList(element.Action)"><i class="fa fa-search fa-1x"
+                <button class="btn btn-xs btn-info" (click)="detailsList(element)"><i class="fa fa-search fa-1x"
                         title="Consulter la la tâche"></i></button>
             </td>
         </ng-container>

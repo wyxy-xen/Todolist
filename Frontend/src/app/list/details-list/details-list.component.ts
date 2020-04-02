@@ -16,25 +16,26 @@ export class DetailsListComponent implements OnInit {
   dateFinList: Date;
   isLateList: string;
   percentList: number;
-  index: number;
+  list: List;
 
   constructor(private dialogRef: MatDialogRef<DetailsListComponent>,
               private listService: ListService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
                 if (data !== null) {
-                  this.index = data.data;
+                  this.list = data.data;
                 }
               }
 
   ngOnInit(): void {
     const lists: List[] = this.listService.getLists();
-    this.nomList = lists[this.index]['Nom'];
-    this.typeList = lists[this.index]['Type'];
-    this.categoryList = lists[this.index]['Category'];
-    this.dateDebutList = lists[this.index]['DateDebut'];
-    this.dateFinList = lists[this.index]['DateFin'];
-    this.isLateList = lists[this.index]['IsLate'];
-    this.percentList = lists[this.index]['Percent'];
+    const index = lists.indexOf(this.list);
+    this.nomList = lists[index]['Nom'];
+    this.typeList = lists[index]['Type'];
+    this.categoryList = lists[index]['Category'];
+    this.dateDebutList = lists[index]['DateDebut'];
+    this.dateFinList = lists[index]['DateFin'];
+    this.isLateList = lists[index]['IsLate'];
+    this.percentList = lists[index]['Percent'];
   } // méthode permettant d'affecter des valeurs aux proprietés
 
   closeModal() {
