@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ListService } from 'src/app/services/list.service';
 import { List } from 'src/app/models/list.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Options } from 'ng5-slider';
 
 @Component({
   selector: 'app-details-list',

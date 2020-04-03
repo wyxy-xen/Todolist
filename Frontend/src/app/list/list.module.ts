@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [DoneListComponent, TodoListComponent, DeleteListComponent, DetailsListComponent, EditListComponent, AddListComponent],
@@ -30,7 +31,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     FormsModule,
     NgbModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    Ng5SliderModule
   ],
   exports: [MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule],
   providers: [MatDialog]

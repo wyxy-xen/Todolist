@@ -59,6 +59,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   updateData() {
     const newLists: List[] = [];
     for (let i = 0; i < this.listService.lists.length; i++) {
+        this.listService.changeToLateList(this.listService.lists[i]);
         if (this.listService.lists[i].IsDone === false) {
           newLists.push(this.listService.lists[i]);
         }
@@ -86,14 +87,6 @@ export class TodoListComponent implements OnInit, AfterViewInit {
       dialogConfig.width = '60%';
     }
   } // méthode permettant d'ouvrir une fentre popup dans la page
-
-  makestateList(isLate: boolean): string {
-    if (isLate) {
-      return 'en retard';
-    } else {
-      return 'en avance';
-    }
-  }
 
   addList() {
     const dialogConfig = new MatDialogConfig();

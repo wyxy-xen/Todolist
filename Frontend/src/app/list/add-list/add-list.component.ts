@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ListService } from 'src/app/services/list.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { List } from 'src/app/models/list.model';
+import { spot } from 'src/app/models/list.enum';
 
 @Component({
   selector: 'app-add-list',
@@ -30,20 +31,12 @@ export class AddListComponent implements OnInit {
     const nom = value.Nom;
     const type = value.Type;
     const category = value.Category;
-    const dateDebut = this.changeFormatDate(value.dp3);
-    const dateFin = this.changeFormatDate(value.dp4);
-    const percent = value.Percent;
-    const list = new List(nom, type, category, dateDebut, dateFin, false, 'en avance', percent);
-    console.log('list', list);
+    const isLate = this.listService.getIsLate(this.listService.changeFormatDate(value.dp3),
+                                              this.listService.changeFormatDate(value.dp4), value.Percent, type);
+    const list = new List(nom, type, category, this.listService.changeFormatDate(value.dp3),
+    this.listService.changeFormatDate(value.dp4), false, isLate, value.Percent);
     this.listService.addList(list);
-    this.dialogRef.close({action: 1, data: this.listService.lists});
-  }
-
-  changeFormatDate(date: any) {
-    const year = date.year;
-    const month = date.month;
-    const day = date.day;
-    return new Date(year + '-' + month + '-' + day);
+    this.dialogRef.close({ action: 1, data: this.listService.lists });
   }
 
 }
