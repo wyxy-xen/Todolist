@@ -37,7 +37,6 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   functionToMaintainCheckedList(list) {
-     console.log(list);
      this.listService.changeToDoneList(list);
      setTimeout(() => {
       this.updateData();
@@ -69,6 +68,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
       newLists[j]['Action'] = j; // ajout de l'espace entre les deux boutons
       newLists[j]['Checkbox'] = '';
     }
+
     this.dataSource = new MatTableDataSource(newLists); // Remplissage du tableau par les données
     this.length = newLists.length; // Affectation du nombre de ligne du tableau
     // tslint:disable-next-line: prefer-for-of
@@ -147,6 +147,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
     dialogConfig.data = { data: list };
+    dialogConfig.height = '90%';
     const dialogRef = this.matDialog.open(DetailsListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {

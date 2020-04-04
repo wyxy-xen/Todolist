@@ -7,11 +7,7 @@ import { Category } from '../models/category.model';
   providedIn: 'root'
 })
 export class ListService {
-  lists: List[] = [
-    new List('entretien d\'embauche', spot['0'], 'aaggga', new Date(), new Date(), false, 'en retard', 100),
-    new List('réunion du travail', spot['1'], 'ffagga', new Date(), new Date(), false, 'en avance', 50),
-    new List('présentation devant le public', spot['0'], 'ghhhhh', new Date(), new Date(), false, 'en retard', 0)
-  ];
+  lists: List[] = [];
   constructor() { }
 
   getLists() {
@@ -20,7 +16,6 @@ export class ListService {
 
   addList(list: List) {
     this.lists.push(list);
-    console.log(this.lists);
   } // méthode permettant d'ajouter une catégorie au tableau de taches
 
   deleteList(list: List) {

@@ -1,0 +1,11 @@
+.second-group {
+    font-size: small;
+}
+
+h3 {
+    font-size: calc(24px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+}
+
+.ng5-slider[disabled] .ng5-slider-pointer {
+    background-color: #0db9f0;
+}

@@ -34,11 +34,21 @@
             <label> {{dateFinList | date: 'dd/MM/yyyy'}}</label>
         </div>
         <hr>
-        <div class="group-dateFin">
-            <label><strong>Etat d'avancement</strong>: </label>
-            &nbsp;
-            <label> {{isLateList}}</label>
+        <div class="group-state">
+            <div class="first-group">
+                <label><strong>Etat d'avancement</strong>: </label>
+                &nbsp;
+                <label> {{isLateList}}</label>
+            </div>
+            <div class="second-group" *ngIf = "!getTypeList()" style = "width: 100%">
+                <ng5-slider [(value)]="value" [options] = "options1"></ng5-slider>
+            </div>
+            <div class="second-group" *ngIf = "getTypeList()" style = "width: 100%">
+                <ng5-slider [(value)]="value" [options] = "options2"></ng5-slider>
+            </div>
         </div>
+        <br>
+        <br>
         <hr>
         <div class="group-percent">
             <label><strong>Pourcentage</strong>: </label>
