@@ -1,0 +1,30 @@
+.cards, .group-input, .filter {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    
+}
+
+.group-form {
+    
+}
+
+.filter {
+    align-items: flex-end;
+}
+
+.card .card-body .table-container {
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.card-header {
+    font-size: calc(16px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+}
