@@ -6,8 +6,8 @@
     
 }
 
-.group-form {
-    
+#tooltip {
+    background-color: white;
 }
 
 .filter {
@@ -27,4 +27,8 @@ canvas {
 
 .card-header {
     font-size: calc(16px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+}
+
+h1 {
+    font-size: calc(26px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
 }
