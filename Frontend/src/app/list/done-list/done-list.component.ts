@@ -99,7 +99,7 @@ export class DoneListComponent implements OnInit, AfterViewInit {
   detailsList(list) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: list };
+    dialogConfig.data = { data: list, info: 'doneList' };
     const dialogRef = this.matDialog.open(DetailsListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {

@@ -38,13 +38,13 @@ export class ListService {
   changeToLateList(list: List) {
     const index = this.lists.indexOf(list);
     const oneList = this.lists[index];
-    oneList.IsLate = this.getIsLate(oneList.DateDebut, oneList.DateFin, oneList.Percent, oneList.Type);
+    oneList.IsLate = this.getIsLate(new Date(oneList.DateDebut), new Date(oneList.DateFin), oneList.Percent, oneList.Type);
     this.lists.splice(index, 1, oneList);
   }
 
   getIsLate(dateDebut: Date, dateFin: Date, percent: number, type: string) {
     const actualDate: Date = new Date();
-    const dates = this.getIntermediateDtes(dateDebut, dateFin);
+    const dates = this.getIntermediateDates(dateDebut, dateFin);
     const date2 = dates[1];
     const date3 = dates[2];
     const date4 = dates[3];
@@ -102,9 +102,9 @@ export class ListService {
     const day = tmp5;
 
     return day;
-}
+  }
 
-  getIntermediateDtes(dateDebut: Date, dateFin: Date) {
+  getIntermediateDates(dateDebut: Date, dateFin: Date) {
     const totalDays = this.dateDiff(dateDebut, dateFin);
     const days = Math.floor(totalDays / 4);
     const dates = [dateDebut];
@@ -121,7 +121,6 @@ export class ListService {
     date.setDate(date.getDate() + days);
     return date;
   }
-
 
   changeFormatDate(date: any) {
     const year = date.year;

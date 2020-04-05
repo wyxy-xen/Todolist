@@ -68,7 +68,6 @@ export class TodoListComponent implements OnInit, AfterViewInit {
       newLists[j]['Action'] = j; // ajout de l'espace entre les deux boutons
       newLists[j]['Checkbox'] = '';
     }
-
     this.dataSource = new MatTableDataSource(newLists); // Remplissage du tableau par les données
     this.length = newLists.length; // Affectation du nombre de ligne du tableau
     // tslint:disable-next-line: prefer-for-of
@@ -146,7 +145,7 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   detailsList(list) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: list };
+    dialogConfig.data = { data: list, info: 'todoList' };
     dialogConfig.height = '90%';
     const dialogRef = this.matDialog.open(DetailsListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(

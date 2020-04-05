@@ -34,9 +34,8 @@ export class AddListComponent implements OnInit {
     const isLate = this.listService.getIsLate(this.listService.changeFormatDate(value.dp3),
                                               this.listService.changeFormatDate(value.dp4), value.Percent, type);
                                               // affecter la valeur de la proprieté IsLate
-    this.listService.addList(new List(nom, type, category, new Date(this.listService.changeFormatDate(value.dp3))as any,
-    new Date(this.listService.changeFormatDate(value.dp4)) as any, false, isLate, value.Percent));
-    console.log('ooops', this.listService.changeFormatDate(value.dp3), this.listService.changeFormatDate(value.dp4));
+    this.listService.addList(new List(nom, type, category, this.listService.changeFormatDate(value.dp3),
+                                      this.listService.changeFormatDate(value.dp4), false, isLate, value.Percent));
     this.dialogRef.close({ action: 1, data: this.listService.lists });
   } // méthode permettant d'ajouter une tache à la liste de taches et de fermer la fenetre par la suite
 

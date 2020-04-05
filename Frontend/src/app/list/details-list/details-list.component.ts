@@ -11,6 +11,7 @@ import { spot } from 'src/app/models/list.enum';
   styleUrls: ['./details-list.component.css']
 })
 export class DetailsListComponent implements OnInit, AfterViewInit {
+  info: string;
   nomList: string;
   typeList: string;
   categoryList: string;
@@ -60,11 +61,16 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
               @Inject(MAT_DIALOG_DATA) public data: any) {
     if (data !== null) {
       this.list = data.data;
+      this.info = data.info;
+      console.log('this.info', data, this.info);
     }
   }
  ngAfterViewInit() {
   const elems = document.getElementsByClassName('ng5-slider-pointer') as HTMLCollectionOf<HTMLElement>;
-  elems[0].style.backgroundColor = '#0db9f0';
+  if (elems[0] !== undefined) {
+    elems[0].style.backgroundColor = '#0db9f0';
+  }
+
  }
 
   ngOnInit(): void {
@@ -82,14 +88,11 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
 
   getValueSlider() {
     const toDay = new Date();
-    console.log('i am here !!');
     if ((toDay <= this.dateFinList) && (toDay >= this.dateDebutList)) {
-      console.log('i am here 2!!');
       const totalDays = this.listService.dateDiff(this.dateDebutList, this.dateFinList); // le total des jours de la tache
       const firstDays = this.listService.dateDiff(this.dateDebutList, toDay);
       // nombre de jours depuis le début de la tache jusqu'au moment présent
-      console.log(this.dateDebutList, this.dateFinList, this.listService.dateDiff(this.dateDebutList, this.dateFinList), firstDays);
-      this.value = (Math.floor(totalDays / firstDays) * 100);
+      this.value = (Math.floor((firstDays / totalDays) * 100));
     } else if (toDay > this.dateFinList) {
        this.value = 100;
     } else if (toDay < this.dateDebutList) {

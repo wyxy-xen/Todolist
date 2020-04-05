@@ -34,7 +34,7 @@
             <label> {{dateFinList | date: 'dd/MM/yyyy'}}</label>
         </div>
         <hr>
-        <div class="group-state">
+        <div class="group-state" *ngIf ="info === 'todoList'">
             <div class="first-group">
                 <label><strong>Etat d'avancement</strong>: </label>
                 &nbsp;
@@ -47,10 +47,10 @@
                 <ng5-slider [(value)]="value" [options] = "options2"></ng5-slider>
             </div>
         </div>
-        <br>
-        <br>
-        <hr>
-        <div class="group-percent">
+        <br *ngIf ="info === 'todoList'">
+        <br *ngIf ="info === 'todoList'">
+        <hr *ngIf ="info === 'todoList'">
+        <div class="group-percent" *ngIf ="info === 'todoList'">
             <label><strong>Pourcentage</strong>: </label>
             &nbsp;
             <label> {{percentList}} %</label>
