@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ListService } from 'src/app/services/list.service';
-import { MatDialog } from '@angular/material/dialog';
-import { List } from 'src/app/models/list.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -15,13 +13,8 @@ import swal from 'sweetalert2';
   styleUrls: ['./bilan.component.css']
 })
 export class BilanComponent implements OnInit {
-  barChartData: ChartDataSets[] = [
-    { data: [65], label: 'Série A' },
-    { data: [28], label: 'Série B' },
-    { data: [38], label: 'Série C' },
-    { data: [77], label: 'Série D' }
-  ];
-  barChartLabels: Label[] = ['Date'];
+  barChartData: ChartDataSets[];
+  barChartLabels: Label[] = ['Séries'];
   barChartOptions: ChartOptions = {
     legend: {
       position: 'right',
@@ -31,10 +24,9 @@ export class BilanComponent implements OnInit {
           title: '<strong>Légende de diagramme</strong>',
           icon: 'info',
           html:
-          '<br>' + '<label><strong style = "color: #ff829c">Série A</strong>: les tâches réalisées dans les temps.</label>' +
-          '<label><strong style = "color: #5eb4ef">Série B</strong>: les tâches réalisées en retard.</label>' +
-          '<label><strong style = "color: #ffd777">Série C</strong>: les tâches non encore réalisées alors que dues sur cette période.</label>' +
-          '<label><strong style = "color: #ebedf0">Série D</strong>: les tâches non encore réalisées alors que dues après cette période.</label>',
+            '<br>' + '<label><strong style = "color: #ff829c">Série A</strong>: les tâches réalisées dans les temps.</label>' +
+            '<label><strong style = "color: #5eb4ef">Série B</strong>: les tâches réalisées en retard.</label>' +
+            '<label><strong style = "color: #ffd777">Série C</strong>: les tâches non encore réalisées alors que dues sur cette période.</label>',
           showCloseButton: true,
           showCancelButton: true,
           focusConfirm: false,
@@ -45,14 +37,10 @@ export class BilanComponent implements OnInit {
             '<i class="fa fa-thumbs-down"></i>',
           cancelButtonAriaLabel: 'Thumbs down'
         });
-        /*Série A: les tâches réalisées dans les temps.
-        Série B: les tâches réalisées en retard.
-        Série C: les tâches non encore réalisées alors que dues sur cette période.
-        Série D: les tâches non encore réalisées alors que dues après cette période.*/
-
       }
     },
     responsive: true,
+    aspectRatio: 1,
     scales: {
       yAxes: [{
         display: true,
@@ -68,9 +56,9 @@ export class BilanComponent implements OnInit {
   barChartPlugins = [];
 
   length: number; // nombre de ligne  du tableau
-  pageSize = 4; // nombre de ligne maximal par page
+  pageSize = 8; // nombre de ligne maximal par page
   displayedColumns: string[] = ['Nom', 'Type', 'Category', 'DateDebut',
-    'DateFin', 'Percent', 'IsLate', 'Action']; // les colonnes du tableau
+    'DateFin', 'Percent', 'IsLate']; // les colonnes du tableau
   dataSource = new MatTableDataSource([]); // Data du tableau
 
   private paginator: MatPaginator;
@@ -83,35 +71,76 @@ export class BilanComponent implements OnInit {
     this.sort = content;
     this.dataSource.sort = this.sort;
   } // tri
-
-  constructor(private listService: ListService,
-    private matDialog: MatDialog) { }
+  dateDebut: Date;
+  dateFin: Date;
+  constructor(private listService: ListService) { }
 
   ngOnInit(): void {
   }
 
-  updateData() {
-    const newLists: List[] = [];
+  filter(value) {
+    this.dateDebut = this.changeFormatDate(value.dp3);
+    this.dateFin = this.changeFormatDate(value.dp4);
+    const lists = this.listService.filterLists(this.dateDebut, this.dateFin);
+    this.dataSource = new MatTableDataSource(lists); // Remplissage du tableau par les données
+    this.length = lists.length; // Affectation du nombre de ligne du tableau
+    this.barChartData = [
+      { data: [this.numberListsDoneWithoutLate()], label: 'Série A' }, // tâches réalisées dans les temps sur cette période
+      { data: [this.numberListsDoneWithLate()], label: 'Série B' }, // tâches réalisées en retard sur cette période donnée
+      { data: [this.numberListsTodoWithLate()], label: 'Série C' } // tâches non encore réalisées sur cette période alors que dues sur cette période
+    ];
+  } // méthode permet de filter les taches selon leurs dates de fin
+
+  numberListsDoneWithLate(): number {
+    let somme = 0;
     for (let i = 0; i < this.listService.lists.length; i++) {
-      this.listService.changeToLateList(this.listService.lists[i]);
-      newLists.push(this.listService.lists[i]);
+          if ((this.listService.lists[i].DateFinExact <= this.dateFin) && (this.listService.lists[i].DateFinExact >= this.dateDebut)) {
+              if (this.listService.lists[i].DateFin < this.listService.lists[i].DateFinExact) {
+                   somme = somme + 1;
+              }
+          }
     }
-    for (let j = 0; j < newLists.length; j++) {
-      // tslint:disable-next-line: no-string-literal
-      newLists[j]['Action'] = j; // ajout de l'espace entre les deux boutons
-      newLists[j]['Checkbox'] = '';
+    return ((somme / this.listService.lists.length) * 100);
+  } // méthodes retourne le pourcentage de tâches réalisées en retard sur cette période donnée
+
+  numberListsDoneWithoutLate(): number {
+    let somme = 0;
+    for (let i = 0; i < this.listService.lists.length; i++) {
+          if ((this.listService.lists[i].DateFinExact <= this.dateFin) && (this.listService.lists[i].DateFinExact >= this.dateDebut)) {
+              if (this.listService.lists[i].DateFin >= this.listService.lists[i].DateFinExact) {
+                   somme = somme + 1;
+              }
+          }
     }
-    this.dataSource = new MatTableDataSource(newLists); // Remplissage du tableau par les données
-    this.length = newLists.length; // Affectation du nombre de ligne du tableau
-    // tslint:disable-next-line: prefer-for-of
+    return ((somme / this.listService.lists.length) * 100);
+  } // méthodes retourne le pourcentage de tâches réalisées dans les temps sur cette période
+
+  numberListsTodoWithLate(): number {
+    let somme = 0;
+    for (let i = 0; i < this.listService.lists.length; i++) {
+      if ((this.listService.lists[i].DateFin <= this.dateFin) && (this.listService.lists[i].DateFin >= this.dateDebut)) {
+        if ((this.listService.lists[i].DateFinExact >= this.dateFin) || (this.listService.lists[i].DateFinExact === undefined)) {
+               somme = somme + 1;
+          }
+      }
+    }
+    return ((somme / this.listService.lists.length) * 100);
+  } // méthodes retourne le pourcentage de tâches non encore réalisées sur cette période alors que dues sur cette période
+    // les taches dont les dates de réalisation supérieures à la date 2 (deuxième date limite de la période choisie)
+    // les taches non encore réalisées alors que la date d'échéance est inclue dans cette période
+
+  changeFormatDate(date: any) {
+    const year = date.year;
+    const month = date.month;
+    const day = date.day;
+    return new Date(year, month - 1, day);
+  } // méthode permet de transformer un object en une date
+
+  displayCards() {
+    if ((this.dateFin !== undefined) || (this.dateDebut !== undefined)) {
+        return true;
+    } else {
+      return false;
+    }
   }
-
-  deleteList(list) {
-
-  }
-
-  detailsList(list) {
-
-  }
-
 }

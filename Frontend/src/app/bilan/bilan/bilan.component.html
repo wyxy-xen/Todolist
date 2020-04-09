@@ -1,40 +1,42 @@
 <br>
-<h1 class="float-left">Bilan & statistiques</h1>
+<h1 class="float-left">Bilan & Statistiques</h1>
 <br>
 <br>
 <br>
 <br>
 <br>
 <div class='filter'>
-    <div class="group-from" style = "width: 500px">
-        <label class="from">allant de: </label>
-        <div class="group-input">
-            <input #datestart id="start_date" class="form-control form-control-sm" placeholder="yyyy-mm-dd" name="dp3" ngbDatepicker
-                #dp3="ngbDatepicker" ngModel required >
-            &nbsp;
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="dp3.toggle()" type="button"></button>
+    <form #f="ngForm" (ngSubmit)="filter(f.value)">
+        <div class="group-from" style="width: 500px">
+            <label class="from">allant de: </label>
+            <div class="group-input">
+                <input #datestart id="start_date" class="form-control form-control-sm" placeholder="yyyy-mm-dd"
+                    name="dp3" ngbDatepicker #dp3="ngbDatepicker" ngModel required>
+                &nbsp;
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="dp3.toggle()" type="button"></button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="group-to" style = "width: 500px">
-        <label class="to">jusqu'à: </label>
-        <div class="group-input">
-            <input #datestart id="fin_date" class="form-control form-control-sm" placeholder="yyyy-mm-dd" name="dp4" ngbDatepicker
-                #dp4="ngbDatepicker" ngModel required>
-            &nbsp;
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="dp4.toggle()" type="button"></button>
+        <div class="group-to" style="width: 500px">
+            <label class="to">jusqu'à: </label>
+            <div class="group-input">
+                <input #datestart id="fin_date" class="form-control form-control-sm" placeholder="yyyy-mm-dd" name="dp4"
+                    ngbDatepicker #dp4="ngbDatepicker" ngModel required>
+                &nbsp;
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="dp4.toggle()" type="button"></button>
+                </div>
             </div>
         </div>
-    </div>
-    <button class="btn btn-sm btn-primary">Filter</button>
+        <button type="submit" class="btn btn-sm btn-primary">Filter</button>
+    </form>
 </div>
 <br>
 <br>
-<div class="cards">
-    <div class="card" style = "width: 700px">
-        <h5 class="card-header">liste des tâches</h5>
+<div class="cards" *ngIf = "displayCards()">
+    <div class="card" style="width: 700px">
+        <h5 class="card-header">Liste des tâches</h5>
         <div class="card-body">
             <div class="table-container mat-elevation-z8">
                 <table mat-table [dataSource]="dataSource" matSort>
@@ -71,16 +73,6 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Etat d'avancement</th>
                         <td mat-cell *matCellDef="let element">{{element.IsLate}}</td>
                     </ng-container>
-                    <ng-container matColumnDef="Action">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
-                        <td mat-cell *matCellDef="let element">
-                            <button class="btn btn-xs btn-danger" (click)="deleteList(element)"><i
-                                    class="fa fa-ban fa-1x" title="Supprimer la la tâche"></i></button>
-                            &nbsp;
-                            <button class="btn btn-xs btn-info" (click)="detailsList(element)"><i
-                                    class="fa fa-search fa-1x" title="Consulter la la tâche"></i></button>
-                        </td>
-                    </ng-container>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
                         [ngClass]="{hovered: row.hovered, highlighted: row.highlighted}"
@@ -94,7 +86,7 @@
             </div>
         </div>
     </div>
-    <div class="card" style = "width: 500px">
+    <div class="card" style="width: 500px">
         <h5 class="card-header">Diagramme des tâches</h5>
         <div class="card-body">
             <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"

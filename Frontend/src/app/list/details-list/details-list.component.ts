@@ -17,6 +17,7 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
   categoryList: string;
   dateDebutList: Date;
   dateFinList: Date;
+  dateFinRList: Date;
   isLateList: string;
   percentList: number;
   list: List;
@@ -62,7 +63,6 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
     if (data !== null) {
       this.list = data.data;
       this.info = data.info;
-      console.log('this.info', data, this.info);
     }
   }
  ngAfterViewInit() {
@@ -80,6 +80,7 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
     this.typeList = lists[index]['Type'];
     this.categoryList = lists[index]['Category'];
     this.dateDebutList = lists[index]['DateDebut'];
+    this.dateFinRList = lists[index]['DateFinExact'];
     this.dateFinList = lists[index]['DateFin'];
     this.isLateList = lists[index]['IsLate'];
     this.percentList = lists[index]['Percent'];

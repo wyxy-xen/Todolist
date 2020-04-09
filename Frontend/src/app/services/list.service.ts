@@ -1,18 +1,32 @@
 import { Injectable } from '@angular/core';
 import { List } from '../models/list.model';
 import { spot } from '../models/list.enum';
-import { Category } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListService {
-  lists: List[] = [];
+  lists: List[] = [
+    new List('ahmed', 'ponctuel', 'sport', new Date(2020, 4 - 1, 2), new Date(2020, 4 - 1, 16), new Date(2020, 4 - 1, 15), false, 'en avance', 30),
+    new List('ahmed', 'ponctuel', 'sport', new Date(2020, 4 - 1, 17), new Date(2020, 4 - 1, 20), new Date(2020, 4 - 1, 21), false, 'en retard', 60),
+    new List('ahmed', 'ponctuel', 'sport', new Date(2020, 4 - 1, 21), new Date(2020, 4 - 1, 27), undefined, false, 'réalisée', 90)
+  ];
   constructor() { }
 
   getLists() {
     return this.lists;
   } // méthode permettant de récupérer le tableau de taches
+
+  filterLists(dateDebut: Date, dateFin: Date) {
+    const newLists = [];
+    for (let i = 0; i < this.lists.length; i++) {
+      if ((this.lists[i].DateFin >= dateDebut)
+        && (this.lists[i].DateFin <= dateFin)) {
+        newLists.push(this.lists[i]);
+      }
+    }
+    return newLists;
+  } // méthode permettant de filter les taches d'une liste
 
   addList(list: List) {
     this.lists.push(list);
@@ -32,6 +46,8 @@ export class ListService {
     const index = this.lists.indexOf(list);
     const oneList = this.lists[index];
     oneList.IsDone = true;
+    oneList.Percent = 100;
+    oneList.DateFinExact = this.getDateFinExact(oneList.Percent);
     this.lists.splice(index, 1, oneList);
   } // méthode permettant de rendre la tache à réaliser une tache réalisée
 
@@ -40,6 +56,16 @@ export class ListService {
     const oneList = this.lists[index];
     oneList.IsLate = this.getIsLate(new Date(oneList.DateDebut), new Date(oneList.DateFin), oneList.Percent, oneList.Type);
     this.lists.splice(index, 1, oneList);
+  }
+
+  getDateFinExact(percent) {
+    let dateFinReal: Date;
+    if (percent >= 100) {
+      dateFinReal = new Date();
+    } else {
+      dateFinReal = undefined;
+    }
+    return dateFinReal;
   }
 
   getIsLate(dateDebut: Date, dateFin: Date, percent: number, type: string) {
@@ -128,4 +154,6 @@ export class ListService {
     const day = date.day;
     return new Date(year, month - 1, day);
   }
+
+
 }

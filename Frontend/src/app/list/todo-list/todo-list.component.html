@@ -19,7 +19,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>
             </th>
             <td mat-cell *matCellDef="let element">
-                <mat-checkbox (change)="functionToMaintainCheckedList(element)"></mat-checkbox>
+                <mat-checkbox (change)="functionToMaintainCheckedList(element)" title = "Si la tâche est terminée, cliquez ici !"></mat-checkbox>
             </td>
         </ng-container>
         <ng-container matColumnDef="Nom">

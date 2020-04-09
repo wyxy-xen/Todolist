@@ -1,4 +1,4 @@
-.cards, .group-input, .filter {
+.cards, .group-input, form{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -10,7 +10,7 @@
     background-color: white;
 }
 
-.filter {
+form {
     align-items: flex-end;
 }
 

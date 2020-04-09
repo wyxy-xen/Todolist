@@ -28,10 +28,16 @@
             <label> {{dateDebutList | date: 'dd/MM/yyyy'}}</label>
         </div>
         <hr>
-        <div class="group-dateFin">
-            <label><strong>Date de fin</strong>: </label>
+        <div class="group-dateFin-prevue">
+            <label><strong>Date de fin (prévue)</strong>: </label>
             &nbsp;
             <label> {{dateFinList | date: 'dd/MM/yyyy'}}</label>
+        </div>
+        <hr>
+        <div class="group-dateFin-reel">
+            <label><strong>Date de fin (réelle)</strong>: </label>
+            &nbsp;
+            <label> {{dateFinRList | date: 'dd/MM/yyyy'}}</label>
         </div>
         <hr>
         <div class="group-state" *ngIf ="info === 'todoList'">
