@@ -3,8 +3,6 @@
 <br>
 <br>
 <br>
-<br>
-<br>
 <div class='filter'>
     <form #f="ngForm" (ngSubmit)="filter(f.value)">
         <div class="group-from" style="width: 500px">
@@ -34,8 +32,8 @@
 </div>
 <br>
 <br>
-<div class="cards" *ngIf = "displayCards()">
-    <div class="card" style="width: 700px">
+<div class="cards" style = "height: 600px;">
+    <div class="card" style="width: 700px" *ngIf = "displayCards()">
         <h5 class="card-header">Liste des tâches</h5>
         <div class="card-body">
             <div class="table-container mat-elevation-z8">
@@ -86,7 +84,7 @@
             </div>
         </div>
     </div>
-    <div class="card" style="width: 500px">
+    <div class="card" style="width: 500px" *ngIf = "displayCards()">
         <h5 class="card-header">Diagramme des tâches</h5>
         <div class="card-body">
             <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
