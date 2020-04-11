@@ -1,12 +1,12 @@
 const express = require('express'); // importation de micro-framework express
-const sequelize = require("./models/index"); // importation de framework sequelize
+const db = require("./models/index"); // importation de framework sequelize
 
 const app = express(); // istanciation de l'objet express afin de créer le serveur 
 // connexion à la base de données
-sequelize.sync();
+db.sync();
 
 // test de la connexion
-sequelize
+db
   .authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
