@@ -29,7 +29,7 @@ const List = db.define('list', {
         type: Sequelize.STRING
     },
     Percent: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
     }
 });
 
