@@ -7,9 +7,10 @@ const List = require('./models/list.model'); // importation du modèle list
 const Category = require('./models/category.model'); // importation du modèle catégorie
 const User = require('./models/user.model'); // importation du modéle utilisateur
 const app = express(); // istanciation de l'objet express afin de créer le serveur 
+const multer = require('./config/multer.config'); // importation du middleware de configuration de multer
 
 /************************ connexion à la base de données ***********************************/
-db.sync();
+db.sync({force: true});
 
 /****************************** test de la connexion ****************************************/ 
 db
@@ -29,13 +30,15 @@ app.options('*', cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
 
-/****************************************** API REST *****************************************/   
-app.post('/api/category', (req, resp, next) => {
+/****************************************** API REST *****************************************/  
+
+app.post('/api/category', multer, (req, resp, next) => {
+    const thingObject = JSON.parse(req.body.thing);
     const category = new Category({
-        Nom: req.body.Nom,
-        Type: req.body.Type,
-        Photo: req.body.Photo
+        ...thingObject,
+        imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
+    console.log('category', category);
     category.save()
     .then((data)=> {resp.status(201).json({message: 'la catégorie est ajoutée avec succès !', data: data})})
     .catch((err) => {resp.status(400).json("l'erreur est la suivante: ", err)});

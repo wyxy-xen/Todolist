@@ -10,6 +10,9 @@ const Category = db.define('category', {
     },
     Photo: {
         type: Sequelize.STRING
+    },
+    imageURL: {
+        type: Sequelize.STRING
     }
 });
 
