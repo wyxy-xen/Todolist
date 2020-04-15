@@ -53,6 +53,14 @@ app.get('/api/category', (req, res, next) => {
     .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requeste et la réponse associées à la route get '/api/category'
 
-
+app.delete('/api/category/:id', (req, res, next) => { 
+  Category.findOne({
+    where: { id: req.params.id }
+ }).then((result) => {
+     return Category.destroy({where: { id: req.params.id }})
+               .then(() => { res.status(200).json({ message: 'la catégorie est supprimée avec succès !'}) })
+               .catch((err) => { res.status(400).json({ err }) });
+ });
+});
 
 module.exports = app;
