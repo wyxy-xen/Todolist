@@ -63,4 +63,12 @@ app.delete('/api/category/:id', (req, res, next) => {
  });
 });
 
+app.get('/api/category/:id', (req, res, next) => { 
+  Category.findOne({
+    where: { id: req.params.id }
+ })
+ .then((category) => {res.status(200).json({ message: 'la catégorie est supprimée avec succès !', Data: category}) })
+ .catch((err) => { res.status(400).json({ err }) });
+});
+
 module.exports = app;
