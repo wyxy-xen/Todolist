@@ -1,3 +1,43 @@
+.form-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    justify-items: stretch;
+}
+.photo-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    justify-items: stretch;
+}
 h3 {
     font-size: calc(24px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+}
+
+.label-file {
+    cursor: pointer;
+    color: #00b1ca;
+    font-weight: bold;
+}
+.label-file:hover {
+    color: #25a5c4;
+}
+
+.input-file {
+    display: none;
+}
+
+input[type="file"] {
+    visibility: hidden;
+}
+
+.image-preview {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.image-preview img{
+    max-width: 100%;
 }

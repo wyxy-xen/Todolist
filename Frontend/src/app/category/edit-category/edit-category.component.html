@@ -3,31 +3,34 @@
         <h3>Editer une catégorie</h3>
     </header>
     <br>
-    <form #f="ngForm" (ngSubmit)="onEditCategory(f.value)">
+    <form [formGroup] = "thingForm">
         <section id="modal-body">
             <div class="form-group">
                 <label class="control-label">Nom: </label>
                 &nbsp;&nbsp;
-                <input type="text" class="form-control form-control-sm" name="Nom" [(ngModel)]="nameCategory"
+                <input type="text" class="form-control form-control-sm" formControlName="Nom"
                     placeholder="Entrez le nom de catégorie" required>
             </div>
             <div class="form-group">
                 <label class="control-label">Type: </label>
                 &nbsp;&nbsp;
-                <select class="form-control form-control-sm" name="Type" [(ngModel)]="typeCategory">
+                <select class="form-control form-control-sm" formControlName="Type">
                     <option>personnel</option>
                     <option>travail</option>
                 </select>
             </div>
             <div class = "photo-group">
-            <label>Cliquez sur <i class="fa fa-picture-o fa-1x"></i> pour remplacer la photo.</label>
-            <button type = "button" class = "btn btn-lg btn-info"(click) = "editPhoto()"><i class="fa fa-picture-o fa-1x"></i> Ajouter une photo</button>
+                <button class="btn btn-success" type="button" (click)="filePicker.click()">Modifier image</button>
+                <input type="file" #filePicker (change)="onImagePick($event)">
+            <div class="image-preview">
+                <img [src]="imagePreview" alt="">
+            </div>
             </div>
         </section>
         <footer id="modal-footer">
             <br>
             <button type="button" class="btn btn-danger float-left" (click)="closeModal()">Annuler</button>
-            <button type="submit" class="btn btn-success float-right">Editer</button>
+            <button type="submit" class="btn btn-success float-right" (click) = "onEditCategory()">Editer</button>
         </footer>
     </form>
 </div>

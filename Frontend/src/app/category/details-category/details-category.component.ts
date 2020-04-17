@@ -11,6 +11,7 @@ import { Category } from 'src/app/models/category.model';
 export class DetailsCategoryComponent implements OnInit {
   nomCategory: string;
   typeCategory: string;
+  photoCategory: string;
   index: number;
   constructor(private dialogRef: MatDialogRef<DetailsCategoryComponent>,
               private categoryService: CategoryService,
@@ -20,10 +21,15 @@ export class DetailsCategoryComponent implements OnInit {
               } }
 
   ngOnInit(): void {
-    const categories: Category[] = this.categoryService.getCategories();
-    console.log('categories', categories);
-    this.nomCategory = categories[this.index]['Nom'];
-    this.typeCategory = categories[this.index]['Type'];
+    this.categoryService.getCategory(this.index).subscribe((data) => {
+      const category = ((data.body) as any).Data;
+      this.nomCategory = category['Nom'];
+      this.typeCategory = category['Type'];
+      this.photoCategory = category['imageURL'];
+    },
+    (err) => {
+      console.log(err);
+    });
   } // méthode permettant d'affecter des valeurs aux proprietés
 
   closeModal() {

@@ -20,7 +20,9 @@ export class AddListComponent implements OnInit {
               private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.categories = this.categoryService.getCategories();
+    this.categoryService.getCategories().subscribe((data) => {
+      this.categories = ((data.body) as any).Data;
+    });
   }
 
   closeModal() {

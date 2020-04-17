@@ -11,6 +11,7 @@ import { ListModule } from './list/list.module';
 import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ListModule,
     LoginModule,
     SignupModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule
   ],
   providers: [ ],
   bootstrap: [AppComponent]

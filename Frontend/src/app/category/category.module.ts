@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddCategoryComponent } from './add-category/add-category.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteCategoryComponent } from './delete-category/delete-category.component';
 import { EditCategoryComponent } from './edit-category/edit-category.component';
 import { DetailsCategoryComponent } from './details-category/details-category.component';
@@ -25,7 +25,8 @@ import { DetailsCategoryComponent } from './details-category/details-category.co
     MatInputModule,
     FlexLayoutModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule],
   providers: [MatDialog],

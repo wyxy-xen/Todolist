@@ -18,7 +18,7 @@ export class CategoryComponent implements OnInit {
 
   length: number; // nombre de ligne  du tableau
   pageSize = 4; // nombre de ligne maximal par page
-  displayedColumns: string[] = ['Nom', 'Type', 'Photo', 'Action']; // les colonnes du tableau
+  displayedColumns: string[] = ['Nom', 'Type', 'imageURL', 'Action']; // les colonnes du tableau
   dataSource = new MatTableDataSource([]); // Data du tableau
 
   private paginator: MatPaginator;
@@ -36,19 +36,24 @@ export class CategoryComponent implements OnInit {
   }
 
   updateData() {
-    this.length = this.categoryService.categories.length; // Affectation du nombre de ligne du tableau
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.categoryService.categories.length; i++) {
-       // tslint:disable-next-line: no-string-literal
-       this.categoryService.categories[i]['Action'] = i; // ajout de l'espace entre les deux boutons
-    }
-    this.dataSource = new MatTableDataSource(this.categoryService.categories); // Remplissage du tableau par les données
+    this.categoryService.getCategories().subscribe((data) => {
+      const categories = ((data.body) as any).Data;
+      this.length = categories.length;
+      for (let i = 0; i < categories.length; i++) {
+        // tslint:disable-next-line: no-string-literal
+        categories[i]['Action'] = i; // ajout de l'espace entre les deux boutons
+      }
+      this.dataSource = new MatTableDataSource(categories); // Remplissage du tableau par les données
+      this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+      this.dataSource.sort = this.sort; // mise à jour de tri
+    },
+    (err) => {
+      console.log('erreur est la suivante: ', err);
+    });
   }
 
   ngOnInit(): void {
   }
-
- 
 
   doFilter(value: string) {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
@@ -62,6 +67,7 @@ export class CategoryComponent implements OnInit {
     } else {
       dialogConfig.width = '50%';
     }
+    dialogConfig.maxHeight = '90vh';
   } // méthode permettant d'ouvrir une fentre popup dans la page
 
   addCategory() {
@@ -72,7 +78,7 @@ export class CategoryComponent implements OnInit {
       (data) => {
         if (data) {
           if (data.action === 1) {
-            this.dataSource.connect().next(data.data); // mise à jour de la base de données
+            this.updateData(); // mise à jour de la base de données
             this.dataSource.paginator = this.paginator; // mise à jour de la pagination
             this.dataSource.sort = this.sort; // mise à jour de tri
           }
@@ -81,10 +87,11 @@ export class CategoryComponent implements OnInit {
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
   } // méthode permettant d'ouvrir le composant AddCategory et d'ajouter la catégorie à la liste après la ferméture de fenetre popup
 
-  deleteCategory(index) {
+
+  deleteCategory(elem) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = {data: index};
+    dialogConfig.data = {data: elem.id};
     const dialogRef = this.matDialog.open(DeleteCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {
@@ -99,10 +106,10 @@ export class CategoryComponent implements OnInit {
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
   } // méthode permettant d'ouvrir le composant DeleteCategory et de supprimer la catégorie de la liste après la fermétrure de fenetre popup
 
-  editCategory(index) {
+  editCategory(elem) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = {data: index};
+    dialogConfig.data = {data: elem.id};
     const dialogRef = this.matDialog.open(EditCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {
@@ -115,12 +122,12 @@ export class CategoryComponent implements OnInit {
         }
       }
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
-  }// méthode permettant d'ouvrir le composant EditCategory et de modifier la catégorie après la fermétrure de fenetre popup
+  } // méthode permettant d'ouvrir le composant EditCategory et de modifier la catégorie après la fermétrure de fenetre popup
 
-  detailsCategory(index) {
+  detailsCategory(elem) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = {data: index};
+    dialogConfig.data = {data: elem.id};
     const dialogRef = this.matDialog.open(DetailsCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {

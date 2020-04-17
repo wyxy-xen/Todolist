@@ -22,20 +22,20 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
             <td mat-cell *matCellDef="let element">{{element.Type}}</td>
         </ng-container>
-        <ng-container matColumnDef="Photo">
+        <ng-container matColumnDef="imageURL">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Photo</th>
-            <td mat-cell *matCellDef="let element">{{element.Photo}}</td>
+            <td mat-cell *matCellDef="let element"><img src = "{{element.imageURL}}" width = "100px"></td>
         </ng-container>
         <ng-container matColumnDef="Action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
             <td mat-cell *matCellDef="let element">
-                <button class="btn btn-xs btn-danger" (click) = "deleteCategory(element.Action)"><i class="fa fa-ban fa-1x"
+                <button class="btn btn-xs btn-danger" (click) = "deleteCategory(element)"><i class="fa fa-ban fa-1x"
                         title="Supprimer la catégorie"></i></button>
                 &nbsp;
-                <button class="btn btn-xs btn-primary" (click) = "editCategory(element.Action)"><i class="fa fa-pencil fa-1x"
+                <button class="btn btn-xs btn-primary" (click) = "editCategory(element)"><i class="fa fa-pencil fa-1x"
                         title="Editer la catégorie"></i></button>
                 &nbsp;
-                <button class="btn btn-xs btn-info" (click) = "detailsCategory(element.Action)"><i class="fa fa-search fa-1x"
+                <button class="btn btn-xs btn-info" (click) = "detailsCategory(element)"><i class="fa fa-search fa-1x"
                         title="Consulter la catégorie"></i></button>
             </td>
         </ng-container>
