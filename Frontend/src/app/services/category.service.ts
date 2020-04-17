@@ -7,7 +7,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CategoryService {
   hostAdress = 'http://localhost:4000/api/category';
-  categories: Category[] = [];
   constructor(private http: HttpClient) { }
 
   getCategories() {

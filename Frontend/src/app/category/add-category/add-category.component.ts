@@ -49,12 +49,11 @@ export class AddCategoryComponent implements OnInit {
      const Type = this.thingForm.get('Type').value;
      const Photo = '';
      const category = new Category(Nom, Type, Photo);
-     console.log('category', category);
      this.categoryService.addCategory(category, this.thingForm.get('image').value).then((data) => {
        console.log(data);
      }).catch((err) => {
        console.error("voici l'erreur" , err);
      });
-     this.dialogRef.close({action: 1, data: this.categoryService.getCategories()});
+     this.dialogRef.close({action: 1 });
   } // méthode permettant d'ajouter une catégorie à la liste de catégorie
 }

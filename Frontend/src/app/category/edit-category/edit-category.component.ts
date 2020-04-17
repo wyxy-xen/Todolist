@@ -56,7 +56,7 @@ export class EditCategoryComponent implements OnInit {
     (err) => {
       console.log(err);
     });
-    this.dialogRef.close({ action: 1, data: this.categoryService.categories });
+    this.dialogRef.close({ action: 1 });
   } // méthode permettant d'ajouter une catégorie à la liste de catégorie
 
   onImagePick(event: Event) {

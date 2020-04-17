@@ -8,9 +8,11 @@ const Category = require('./models/category.model'); // importation du modèle c
 const User = require('./models/user.model'); // importation du modéle utilisateur
 const app = express(); // istanciation de l'objet express afin de créer le serveur 
 const multer = require('./config/multer.config'); // importation du middleware de configuration de multer
-const path = require('path');
+const path = require('path'); // importation du module path
+const fs = require('fs'); // importation du module fs pour la gestion des fichiers dans le dossier back-end
 
 /************************ connexion à la base de données ***********************************/
+
 db.sync({force: false}); // warning: if force is true, the database will be omitted ! please, take care !!! 
 
 /****************************** test de la connexion ****************************************/ 
@@ -39,7 +41,6 @@ app.post('/api/category', multer, (req, resp, next) => {
         ...thingObject,
         imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-    console.log('category', category);
     category.save()
     .then((data)=> {resp.status(201).json({message: 'la catégorie est ajoutée avec succès !', data: data})})
     .catch((err) => {resp.status(400).json("l'erreur est la suivante: ", err)});
@@ -56,10 +57,17 @@ app.get('/api/category', (req, res, next) => {
 app.delete('/api/category/:id', (req, res, next) => { 
   Category.findOne({
     where: { id: req.params.id }
- }).then((result) => {
-     return Category.destroy({where: { id: req.params.id }})
-               .then(() => { res.status(200).json({ message: 'la catégorie est supprimée avec succès !'}) })
-               .catch((err) => { res.status(400).json({ err }) });
+ }).then((category) => {
+     const filename = category.imageURL.split('/images/')[1];
+     fs.unlink(`images/${filename}`, () => {
+      return Category.destroy({where: { id: req.params.id }})
+      .then(() => { res.status(200).json({ message: 'la catégorie est supprimée avec succès !'}) })
+      .catch((err) => { res.status(400).json({ err }) });
+     });
+     
+ })
+ .catch((err) => {
+   res.status(500).json({err});
  });
 }); // middleware pour traiter la requeste et la réponse associées à la route delete '/api/category/:id'
 
