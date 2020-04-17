@@ -56,21 +56,20 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   updateData() {
-    const newLists: List[] = [];
-    for (let i = 0; i < this.listService.lists.length; i++) {
-        this.listService.changeToLateList(this.listService.lists[i]);
-        if (this.listService.lists[i].IsDone === false) {
-          newLists.push(this.listService.lists[i]);
-        }
-    }
-    for (let j = 0; j < newLists.length; j++) {
-      // tslint:disable-next-line: no-string-literal
-      newLists[j]['Action'] = j; // ajout de l'espace entre les deux boutons
-      newLists[j]['Checkbox'] = '';
-    }
-    this.dataSource = new MatTableDataSource(newLists); // Remplissage du tableau par les données
-    this.length = newLists.length; // Affectation du nombre de ligne du tableau
-    // tslint:disable-next-line: prefer-for-of
+    this.listService.getLists().subscribe((data) => {
+      const lists = ((data.body) as any).Data;
+      this.length = lists.length;
+      for (let i = 0; i < lists.length; i++) {
+        // tslint:disable-next-line: no-string-literal
+        lists[i]['Action'] = i; // ajout de l'espace entre les deux boutons
+      }
+      this.dataSource = new MatTableDataSource(lists); // Remplissage du tableau par les données
+      this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+      this.dataSource.sort = this.sort; // mise à jour de tri
+    },
+    (err) => {
+      console.log('erreur est la suivante: ', err);
+    });
   }
 
   doFilter(value: string) {

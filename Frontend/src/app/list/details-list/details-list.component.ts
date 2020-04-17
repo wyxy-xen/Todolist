@@ -74,7 +74,7 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
  }
 
   ngOnInit(): void {
-    const lists: List[] = this.listService.getLists();
+    /*const lists: List[] =this.listService.getLists();
     const index = lists.indexOf(this.list);
     this.nomList = lists[index]['Nom'];
     this.typeList = lists[index]['Type'];
@@ -84,7 +84,7 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
     this.dateFinList = lists[index]['DateFin'];
     this.isLateList = lists[index]['IsLate'];
     this.percentList = lists[index]['Percent'];
-    this.getValueSlider();
+    this.getValueSlider();*/
   } // méthode permettant d'affecter des valeurs aux proprietés
 
   getValueSlider() {

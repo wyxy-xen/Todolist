@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import { List } from '../models/list.model';
 import { spot } from '../models/list.enum';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListService {
-  lists: List[] = [
-    new List('ahmed', 'ponctuel', 'sport', new Date(2020, 4 - 1, 2), new Date(2020, 4 - 1, 16), new Date(2020, 4 - 1, 15), false, 'en avance', 30),
-    new List('ahmed', 'ponctuel', 'sport', new Date(2020, 4 - 1, 17), new Date(2020, 4 - 1, 20), new Date(2020, 4 - 1, 21), false, 'en retard', 60),
-    new List('ahmed', 'ponctuel', 'sport', new Date(2020, 4 - 1, 21), new Date(2020, 4 - 1, 27), undefined, false, 'réalisée', 90)
-  ];
-  constructor() { }
+  lists: List[] = [];
+  hostAdress = 'http://localhost:4000/api/list';
+  constructor(private http: HttpClient) { }
 
   getLists() {
-    return this.lists;
+    return this.http.get(this.hostAdress, {observe: 'response'});
   } // méthode permettant de récupérer le tableau de taches
 
   filterLists(dateDebut: Date, dateFin: Date) {

@@ -29,7 +29,7 @@ export class EditListComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.lists = this.listService.getLists();
+    this.listService.getLists();
     const index = this.lists.indexOf(this.list);
     this.NomList = this.lists[index]['Nom'];
     this.typeList = this.lists[index]['Type'];

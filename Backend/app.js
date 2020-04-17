@@ -35,6 +35,8 @@ app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
 
 /****************************************** API REST *****************************************/
 
+/****************************************** API REST du modèle category*****************************************/
+
 app.post('/api/category', multer, (req, resp, next) => {
   const thingObject = JSON.parse(req.body.thing);
   const category = new Category({
@@ -100,5 +102,13 @@ app.put('/api/category/:id', multer, (req, res, next) => {
 
   });
 }); // middleware pour traiter la requete et la réponse associées à la route put '/api/category/:id'
+
+/****************************************** API REST du modèle list*****************************************/
+
+app.get('/api/list', (req, res, next) => {
+  List.findAll()
+  .then((categories) => { res.status(200).json({ message: 'les taches sont téléchargées avec succès !', Data: categories }) })
+  .catch((err) => { res.status(400).json({ err }) });
+}); // middleware pour traiter la requete et la réponse associées à la route get '/api/list'
 
 module.exports = app;

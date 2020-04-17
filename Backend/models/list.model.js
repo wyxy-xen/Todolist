@@ -26,7 +26,7 @@ const List = db.define('list', {
         type: Sequelize.BOOLEAN
     },
     IsLate: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('réalisée', 'en avance', 'en retard')
     },
     Percent: {
         type: Sequelize.INTEGER
