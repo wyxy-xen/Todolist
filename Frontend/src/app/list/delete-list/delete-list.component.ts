@@ -9,12 +9,12 @@ import { List } from 'src/app/models/list.model';
   styleUrls: ['./delete-list.component.css']
 })
 export class DeleteListComponent implements OnInit {
-  list: List;
+  id: any;
   constructor(private dialogRef: MatDialogRef<DeleteListComponent>,
               private listService: ListService,
               @Inject(MAT_DIALOG_DATA) public data: any) { 
       if (data !== null) {
-        this.list = data.data;
+        this.id = data.data;
    }
     }
 
@@ -26,8 +26,13 @@ export class DeleteListComponent implements OnInit {
   } // méthode permettant de fermer la fenetre popup
 
   onDeleteList() {
-    this.listService.deleteList(this.list);
-    this.dialogRef.close({action: 1, data: this.listService.lists});
+    this.listService.deleteList(this.id).subscribe((data) => {
+      console.log(data);
+    },
+    (err) => {
+      console.log(err);
+    });
+    this.dialogRef.close({ action: 1 });
   } // méthode permettant de supprimer une tache de la liste de taches dans le service
   // et d'envoyer la nouvelle liste au composant parent
 

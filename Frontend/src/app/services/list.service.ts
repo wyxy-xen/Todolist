@@ -30,9 +30,8 @@ export class ListService {
     return this.http.post(this.hostAdress, list, {observe: 'response'});
   } // méthode permettant d'ajouter une catégorie au tableau de taches
 
-  deleteList(list: List) {
-    const index = this.lists.indexOf(list);
-    this.lists.splice(index, 1);
+  deleteList(id: any) {
+    return this.http.delete(this.hostAdress + '/' + id);
   } // méthode permettant de supprimer une tache du tableau de taches
 
   editList(exList: List, list: List) {

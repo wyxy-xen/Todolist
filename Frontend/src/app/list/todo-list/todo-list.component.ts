@@ -103,10 +103,10 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     ); // exécuter la fonction callback après la fermeture de la fenetre popup
   } // méthode permettant d'ouvrir le composant AddList et d'ajouter la tache à la liste après la ferméture de fenetre popup
 
-  deleteList(list) {
+  deleteList(elem) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: list };
+    dialogConfig.data = { data: elem.id };
     const dialogRef = this.matDialog.open(DeleteListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {

@@ -120,4 +120,17 @@ app.post('/api/list', (req, resp, next) => {
     .catch((err) => { resp.status(400).json("l'erreur est la suivante: ", err) });
 }); // middleware pour traiter la requete et la réponse associées à la route post '/api/category'
 
+app.delete('/api/list/:id', (req, res, next) => {
+  List.findOne({
+    where: { id: req.params.id }
+  }).then((list) => {
+    return List.destroy({ where: { id: req.params.id } })
+        .then(() => { res.status(200).json({ message: 'la tache est supprimée avec succès !' }) })
+        .catch((err) => { res.status(400).json({ err }) });
+  })
+    .catch((err) => {
+      res.status(500).json({ err });
+    });
+}); // middleware pour traiter la requete et la réponse associées à la route delete '/api/list/:id'
+
 module.exports = app;
