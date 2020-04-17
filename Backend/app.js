@@ -61,14 +61,29 @@ app.delete('/api/category/:id', (req, res, next) => {
                .then(() => { res.status(200).json({ message: 'la catégorie est supprimée avec succès !'}) })
                .catch((err) => { res.status(400).json({ err }) });
  });
-});
+}); // middleware pour traiter la requeste et la réponse associées à la route delete '/api/category/:id'
 
 app.get('/api/category/:id', (req, res, next) => { 
   Category.findOne({
     where: { id: req.params.id }
  })
- .then((category) => {res.status(200).json({ message: 'la catégorie est supprimée avec succès !', Data: category}) })
+ .then((category) => {res.status(200).json({ message: 'la catégorie est téléchargée avec succès !', Data: category}) })
  .catch((err) => { res.status(400).json({ err }) });
-});
+}); // middleware pour traiter la requeste et la réponse associées à la route get '/api/category/:id'
+
+app.put('/api/category/:id', multer, (req, res, next) => { 
+  const thingObject = req.file ? {
+    ...JSON.parse(req.body.thing),
+    imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  } : {...JSON.parse(req.body.thing)};
+
+  Category.findOne({
+    where: { id: req.params.id }
+ }).then((result) => {
+     return Category.update(thingObject, {where: { id: req.params.id }})
+               .then(() => { res.status(200).json({ message: 'la catégorie est mise à jour avec succès !'}) })
+               .catch((err) => { res.status(400).json({ err }) });
+ });
+}); // middleware pour traiter la requeste et la réponse associées à la route put '/api/category/:id'
 
 module.exports = app;
