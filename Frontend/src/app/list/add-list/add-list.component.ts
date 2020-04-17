@@ -16,8 +16,8 @@ export class AddListComponent implements OnInit {
   categories: Category[];
   dateDebut: Date = new Date();
   constructor(private dialogRef: MatDialogRef<AddListComponent>,
-              private listService: ListService,
-              private categoryService: CategoryService) { }
+    private listService: ListService,
+    private categoryService: CategoryService) { }
 
   ngOnInit(): void {
     this.categoryService.getCategories().subscribe((data) => {
@@ -30,16 +30,23 @@ export class AddListComponent implements OnInit {
   } // méthode permettant de fermer une fenetre modale
 
   onAddList(value) {
+    console.log('value', value);
     const nom = value.Nom;
     const type = value.Type;
     const category = value.Category;
     const isLate = this.listService.getIsLate(this.listService.changeFormatDate(value.dp3),
-                                              this.listService.changeFormatDate(value.dp4), value.Percent, type);
+      this.listService.changeFormatDate(value.dp4), value.Percent, type);
     // affecter la valeur de la proprieté IsLate
     const dateFinReal = this.listService.getDateFinExact(value.Percent);
-    this.listService.addList(new List(nom, type, category, this.listService.changeFormatDate(value.dp3),
-                                      this.listService.changeFormatDate(value.dp4), dateFinReal, false, isLate, value.Percent));
-    this.dialogRef.close({ action: 1, data: this.listService.lists });
+    const list = new List(nom, type, category, this.listService.changeFormatDate(value.dp3),
+    this.listService.changeFormatDate(value.dp4), dateFinReal, false, isLate, value.Percent);
+    console.log('list', list);
+    this.listService.addList(list).subscribe((data) => {
+      console.log(data);
+    }, (err) => {
+      console.log(err);
+    });
+    this.dialogRef.close({ action: 1 });
   } // méthode permettant d'ajouter une tache à la liste de taches et de fermer la fenetre par la suite
 
 }

@@ -111,4 +111,13 @@ app.get('/api/list', (req, res, next) => {
   .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requete et la réponse associées à la route get '/api/list'
 
+app.post('/api/list', (req, resp, next) => {
+  const list = new List({
+    ...req.body
+  });
+  list.save()
+    .then((data) => { resp.status(201).json({ message: 'la tache est ajoutée avec succès !', data: data }) })
+    .catch((err) => { resp.status(400).json("l'erreur est la suivante: ", err) });
+}); // middleware pour traiter la requete et la réponse associées à la route post '/api/category'
+
 module.exports = app;

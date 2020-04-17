@@ -27,7 +27,7 @@ export class ListService {
   } // méthode permettant de filter les taches d'une liste
 
   addList(list: List) {
-    this.lists.push(list);
+    return this.http.post(this.hostAdress, list, {observe: 'response'});
   } // méthode permettant d'ajouter une catégorie au tableau de taches
 
   deleteList(list: List) {

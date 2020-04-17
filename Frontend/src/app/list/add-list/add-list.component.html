@@ -22,7 +22,8 @@
             <div class="form-group">
                 <label class="control-label">Catégorie: </label>
                 &nbsp;&nbsp;
-                <select class="form-control form-control-sm" name="Category" ngModel required>
+                <select class="form-control form-control-sm" id = "categoryList" name="Category" ngModel required>
+                    <option value="" disabled selected>None</option>
                     <option *ngFor="let category of categories">{{category.Nom}}</option>
                 </select>
             </div>
