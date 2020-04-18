@@ -37,10 +37,15 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   functionToMaintainCheckedList(list) {
-     this.listService.changeToDoneList(list);
-     setTimeout(() => {
-      this.updateData();
-     }, 2000);
+     this.listService.changeToDoneList(list).subscribe((data) => {
+       console.log(data);
+       setTimeout(() => {
+        this.updateData();
+       }, 2000);
+     },
+     (err) => {
+       console.log(err);
+     });
   }
 
 
@@ -58,12 +63,17 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   updateData() {
     this.listService.getLists().subscribe((data) => {
       const lists = ((data.body) as any).Data;
-      this.length = lists.length;
+      const newLists: List[] = [];
       for (let i = 0; i < lists.length; i++) {
+        lists[i]['Action'] = i;
         // tslint:disable-next-line: no-string-literal
-        lists[i]['Action'] = i; // ajout de l'espace entre les deux boutons
+        if (lists[i].IsDone === false) {
+          // ajout de l'espace entre les deux boutons
+          newLists.push(lists[i]);
+        }
       }
-      this.dataSource = new MatTableDataSource(lists); // Remplissage du tableau par les données
+      this.length = newLists.length;
+      this.dataSource = new MatTableDataSource(newLists); // Remplissage du tableau par les données
       this.dataSource.paginator = this.paginator; // mise à jour de la pagination
       this.dataSource.sort = this.sort; // mise à jour de tri
     },

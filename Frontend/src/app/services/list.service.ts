@@ -43,12 +43,13 @@ export class ListService {
   } // méthode permettant de modifier une tache dans le tableau de taches
 
   changeToDoneList(list: List) {
-    const index = this.lists.indexOf(list);
-    const oneList = this.lists[index];
-    oneList.IsDone = true;
-    oneList.Percent = 100;
-    oneList.DateFinExact = this.getDateFinExact(oneList.Percent);
-    this.lists.splice(index, 1, oneList);
+    console.log('list', list);
+    const index = list['id'];
+    list.IsDone = true;
+    list.Percent = 100;
+    list.IsLate = 'réalisée';
+    list.DateFinExact = this.getDateFinExact(list.Percent);
+    return this.editList(index, list);
   } // méthode permettant de rendre la tache à réaliser une tache réalisée
 
   changeToLateList(list: List) {

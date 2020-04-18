@@ -7,6 +7,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { List } from 'src/app/models/list.model';
 import { DeleteListComponent } from '../delete-list/delete-list.component';
 import { DetailsListComponent } from '../details-list/details-list.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-done-list',
@@ -48,19 +49,25 @@ export class DoneListComponent implements OnInit, AfterViewInit {
   }
 
   updateData() {
-    const newLists: List[] = [];
-    for (let i = 0; i < this.listService.lists.length; i++) {
-        if (this.listService.lists[i].IsDone === true) {
-          newLists.push(this.listService.lists[i]);
+    this.listService.getLists().subscribe((data) => {
+      const lists = ((data.body) as any).Data;
+      const newLists: List[] = [];
+      for (let i = 0; i < lists.length; i++) {
+        lists[i]['Action'] = i;
+        // tslint:disable-next-line: no-string-literal
+        if (lists[i].IsDone === true) {
+          // ajout de l'espace entre les deux boutons
+          newLists.push(lists[i]);
         }
-    }
-    for (let j = 0; j < newLists.length; j++) {
-      // tslint:disable-next-line: no-string-literal
-      newLists[j]['Action'] = j; // ajout de l'espace entre les deux boutons
-    }
-    this.dataSource = new MatTableDataSource(newLists); // Remplissage du tableau par les données
-    this.length = newLists.length; // Affectation du nombre de ligne du tableau
-    // tslint:disable-next-line: prefer-for-of
+      }
+      this.length = newLists.length;
+      this.dataSource = new MatTableDataSource(newLists); // Remplissage du tableau par les données
+      this.dataSource.paginator = this.paginator; // mise à jour de la pagination
+      this.dataSource.sort = this.sort; // mise à jour de tri
+    },
+    (err) => {
+      console.log('erreur est la suivante: ', err);
+    });
   }
 
   doFilter(value: string) {
@@ -77,10 +84,10 @@ export class DoneListComponent implements OnInit, AfterViewInit {
     }
   } // méthode permettant d'ouvrir une fentre popup dans la page
 
-  deleteList(list) {
+  deleteList(elem) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: list };
+    dialogConfig.data = { data: elem.id };
     const dialogRef = this.matDialog.open(DeleteListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {
@@ -96,10 +103,10 @@ export class DoneListComponent implements OnInit, AfterViewInit {
   } // méthode permettant d'ouvrir le composant DeleteList
   // et de supprimer une tache après la fermétrure de fenetre popup
 
-  detailsList(list) {
+  detailsList(elem) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: list, info: 'doneList' };
+    dialogConfig.data = { data: elem.id, info: 'doneList' };
     const dialogRef = this.matDialog.open(DetailsListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {
