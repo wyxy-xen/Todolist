@@ -107,8 +107,8 @@ app.put('/api/category/:id', multer, (req, res, next) => {
 
 app.get('/api/list', (req, res, next) => {
   List.findAll()
-  .then((categories) => { res.status(200).json({ message: 'les taches sont téléchargées avec succès !', Data: categories }) })
-  .catch((err) => { res.status(400).json({ err }) });
+    .then((categories) => { res.status(200).json({ message: 'les taches sont téléchargées avec succès !', Data: categories }) })
+    .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requete et la réponse associées à la route get '/api/list'
 
 app.post('/api/list', (req, resp, next) => {
@@ -125,8 +125,8 @@ app.delete('/api/list/:id', (req, res, next) => {
     where: { id: req.params.id }
   }).then((list) => {
     return List.destroy({ where: { id: req.params.id } })
-        .then(() => { res.status(200).json({ message: 'la tache est supprimée avec succès !' }) })
-        .catch((err) => { res.status(400).json({ err }) });
+      .then(() => { res.status(200).json({ message: 'la tache est supprimée avec succès !' }) })
+      .catch((err) => { res.status(400).json({ err }) });
   })
     .catch((err) => {
       res.status(500).json({ err });
@@ -141,4 +141,18 @@ app.get('/api/list/:id', (req, res, next) => {
     .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requete et la réponse associées à la route get '/api/category/:id'
 
-module.exports = app;
+app.put('/api/list/:id', (req, res, next) => {
+  List.findOne({
+    where: { id: req.params.id }
+  })
+    .then((list) => {
+      List.update({ ...req.body }, { where: { id: req.params.id } })
+        .then((list) => { res.status(200).json({ message: 'la tache est mise à jour avec succès !', Data: list }) })
+        .catch((err) => { res.status(400).json({ err }) });
+    })
+    .catch((err) => {
+      res.status(500).json({ err });
+    }); // middleware pour traiter la requete et la réponse associées à la route put '/api/category/:id'
+  });
+
+  module.exports = app;

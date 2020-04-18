@@ -23,7 +23,7 @@
                 <label class="control-label">Catégorie: </label>
                 &nbsp;&nbsp;
                 <select class="form-control form-control-sm" name="Category" [(ngModel)] = "CategoryList" required>
-                    <option *ngFor="let list of lists">{{list.Category}}</option>
+                    <option *ngFor="let category of categories">{{category.Nom}}</option>
                 </select>
             </div>
             <div class="form-group">

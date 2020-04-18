@@ -122,10 +122,10 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   } // méthode permettant d'ouvrir le composant DeleteList
   // et de supprimer une tache après la fermétrure de fenetre popup
 
-  editList(list) {
+  editList(elem) {
     const dialogConfig = new MatDialogConfig();
     this.openModal(dialogConfig);
-    dialogConfig.data = { data: list };
+    dialogConfig.data = { data: elem.id };
     const dialogRef = this.matDialog.open(EditListComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       (data) => {

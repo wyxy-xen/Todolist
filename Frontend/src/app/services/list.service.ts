@@ -38,9 +38,8 @@ export class ListService {
     return this.http.delete(this.hostAdress + '/' + id);
   } // méthode permettant de supprimer une tache du tableau de taches
 
-  editList(exList: List, list: List) {
-    const index = this.lists.indexOf(exList);
-    this.lists.splice(index, 1, list);
+  editList(id: any, list: List) {
+    return this.http.put(this.hostAdress + '/' + id, list, {observe: 'response'});
   } // méthode permettant de modifier une tache dans le tableau de taches
 
   changeToDoneList(list: List) {
