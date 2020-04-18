@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { ListService } from 'src/app/services/list.service';
-import { List } from 'src/app/models/list.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Options, LabelType } from 'ng5-slider';
+import { Options } from 'ng5-slider';
 import { spot } from 'src/app/models/list.enum';
 
 @Component({
@@ -20,7 +19,7 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
   dateFinRList: Date;
   isLateList: string;
   percentList: number;
-  list: List;
+  id: any;
   value: number;
   options1: Options = {
     disabled: true,
@@ -61,43 +60,49 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
               private listService: ListService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     if (data !== null) {
-      this.list = data.data;
+      this.id = data.data;
       this.info = data.info;
     }
   }
- ngAfterViewInit() {
-  const elems = document.getElementsByClassName('ng5-slider-pointer') as HTMLCollectionOf<HTMLElement>;
-  if (elems[0] !== undefined) {
-    elems[0].style.backgroundColor = '#0db9f0';
+
+  ngAfterViewInit() {
+    const elems = document.getElementsByClassName('ng5-slider-pointer') as HTMLCollectionOf<HTMLElement>;
+    if (elems[0] !== undefined) {
+      elems[0].style.backgroundColor = '#0db9f0';
+    }
   }
 
- }
-
   ngOnInit(): void {
-    /*const lists: List[] =this.listService.getLists();
-    const index = lists.indexOf(this.list);
-    this.nomList = lists[index]['Nom'];
-    this.typeList = lists[index]['Type'];
-    this.categoryList = lists[index]['Category'];
-    this.dateDebutList = lists[index]['DateDebut'];
-    this.dateFinRList = lists[index]['DateFinExact'];
-    this.dateFinList = lists[index]['DateFin'];
-    this.isLateList = lists[index]['IsLate'];
-    this.percentList = lists[index]['Percent'];
-    this.getValueSlider();*/
+    this.listService.getList(this.id).subscribe((data) => {
+      console.log(data);
+      const list = ((data.body) as any).Data;
+      this.nomList = list['Nom'];
+      this.typeList = list['Type'];
+      this.categoryList = list['Category'];
+      this.dateDebutList = list['DateDebut'];
+      this.dateFinRList = list['DateFinExact'];
+      this.dateFinList = list['DateFin'];
+      this.isLateList = list['IsLate'];
+      this.percentList = list['Percent'];
+      this.getValueSlider();
+    },
+      (err) => {
+        console.log(err);
+      });
   } // méthode permettant d'affecter des valeurs aux proprietés
 
   getValueSlider() {
     const toDay = new Date();
-    if ((toDay <= this.dateFinList) && (toDay >= this.dateDebutList)) {
-      const totalDays = this.listService.dateDiff(this.dateDebutList, this.dateFinList); // le total des jours de la tache
-      const firstDays = this.listService.dateDiff(this.dateDebutList, toDay);
+    if ((toDay <= new Date(this.dateFinList)) && (toDay >= new Date(this.dateDebutList))) {
+      const totalDays = this.listService.dateDiff(new Date(this.dateDebutList),
+                                                  new Date(this.dateFinList)); // le total des jours de la tache
+      const firstDays = this.listService.dateDiff(new Date(this.dateDebutList), toDay);
       // nombre de jours depuis le début de la tache jusqu'au moment présent
       this.value = (Math.floor((firstDays / totalDays) * 100));
-    } else if (toDay > this.dateFinList) {
-       this.value = 100;
-    } else if (toDay < this.dateDebutList) {
-       this.value = 0;
+    } else if (toDay > new Date(this.dateFinList)) {
+      this.value = 100;
+    } else if (toDay < new Date(this.dateDebutList)) {
+      this.value = 0;
     }
   } // méthode permettant de donner la position de pointer de slider
 

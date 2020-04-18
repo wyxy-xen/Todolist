@@ -15,6 +15,10 @@ export class ListService {
     return this.http.get(this.hostAdress, {observe: 'response'});
   } // méthode permettant de récupérer le tableau de taches
 
+  getList(id: any) {
+    return this.http.get(this.hostAdress + '/' + id, {observe: 'response'});
+  } // méthode permettant de récupérer une tache de la base de données
+
   filterLists(dateDebut: Date, dateFin: Date) {
     const newLists = [];
     for (let i = 0; i < this.lists.length; i++) {

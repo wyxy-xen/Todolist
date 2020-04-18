@@ -133,4 +133,12 @@ app.delete('/api/list/:id', (req, res, next) => {
     });
 }); // middleware pour traiter la requete et la réponse associées à la route delete '/api/list/:id'
 
+app.get('/api/list/:id', (req, res, next) => {
+  List.findOne({
+    where: { id: req.params.id }
+  })
+    .then((list) => { res.status(200).json({ message: 'la tache est téléchargée avec succès !', Data: list }) })
+    .catch((err) => { res.status(400).json({ err }) });
+}); // middleware pour traiter la requete et la réponse associées à la route get '/api/category/:id'
+
 module.exports = app;
