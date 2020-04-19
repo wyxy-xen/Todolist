@@ -18,6 +18,7 @@ export class UserService {
   } // méthode permettant de récupérer une tache de la base de données
 
   addUser(user: User) {
+    console.log('user', user);
     return this.http.post(this.hostAdress, user, {observe: 'response'});
   } // méthode permettant d'ajouter une catégorie au tableau de taches
 

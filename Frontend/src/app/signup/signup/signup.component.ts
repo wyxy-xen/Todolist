@@ -40,7 +40,8 @@ export class SignupComponent implements OnInit {
     const Role = role['1'];
     const user = new User(nom, prenom, email, login, password, Role);
     this.userService.addUser(user).subscribe(
-      ( ) => {
+      (data) => {
+        console.log(data);
         this.router.navigateByUrl('/login');
       },
       (err) => {

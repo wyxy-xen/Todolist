@@ -8,13 +8,13 @@ const User = db.define('user', {
     Prenom: {
         type: Sequelize.STRING
     },
-    Login: {
-        type: Sequelize.STRING
-    },
     Email: {
         type: Sequelize.STRING
     },
-    Password: {
+    Login: {
+        type: Sequelize.STRING
+    },
+    MPasse: {
         type: Sequelize.STRING
     },
     Role: {

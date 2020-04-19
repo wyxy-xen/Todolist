@@ -157,4 +157,13 @@ app.put('/api/list/:id', (req, res, next) => {
 
   /****************************************** API REST du modèle user*****************************************/
 
+  app.post('/api/user', (req, resp, next) => {
+    const user = new User({
+      ...req.body
+    });
+    user.save()
+      .then((data) => { resp.status(201).json({ message: 'l utilisateur est ajouté avec succès !', data: data }) })
+      .catch((err) => { resp.status(400).json("l'erreur est la suivante: ", err) });
+  }); // middleware pour traiter la requete et la réponse associées à la route post '/api/category'
+
   module.exports = app;
