@@ -155,4 +155,6 @@ app.put('/api/list/:id', (req, res, next) => {
     }); // middleware pour traiter la requete et la réponse associées à la route put '/api/category/:id'
   });
 
+  /****************************************** API REST du modèle user*****************************************/
+
   module.exports = app;

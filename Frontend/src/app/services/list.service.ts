@@ -19,17 +19,6 @@ export class ListService {
     return this.http.get(this.hostAdress + '/' + id, {observe: 'response'});
   } // méthode permettant de récupérer une tache de la base de données
 
-  filterLists(dateDebut: Date, dateFin: Date) {
-    const newLists = [];
-    for (let i = 0; i < this.lists.length; i++) {
-      if ((this.lists[i].DateFin >= dateDebut)
-        && (this.lists[i].DateFin <= dateFin)) {
-        newLists.push(this.lists[i]);
-      }
-    }
-    return newLists;
-  } // méthode permettant de filter les taches d'une liste
-
   addList(list: List) {
     return this.http.post(this.hostAdress, list, {observe: 'response'});
   } // méthode permettant d'ajouter une catégorie au tableau de taches
@@ -43,7 +32,6 @@ export class ListService {
   } // méthode permettant de modifier une tache dans le tableau de taches
 
   changeToDoneList(list: List) {
-    console.log('list', list);
     const index = list['id'];
     list.IsDone = true;
     list.Percent = 100;

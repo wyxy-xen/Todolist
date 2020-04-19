@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignupComponent } from './signup/signup.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 
 @NgModule({
   declarations: [SignupComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule
   ]
 })
 export class SignupModule { }

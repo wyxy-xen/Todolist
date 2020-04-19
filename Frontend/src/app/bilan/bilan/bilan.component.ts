@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import swal from 'sweetalert2';
+import { List } from 'src/app/models/list.model';
 
 @Component({
   selector: 'app-bilan',
@@ -73,15 +74,36 @@ export class BilanComponent implements OnInit {
   } // tri
   dateDebut: Date;
   dateFin: Date;
-  constructor(private listService: ListService) { }
+  lists: List[];
+
+  constructor(private listService: ListService) {
+    this.listService.getLists().subscribe((data) => {
+      console.log(data);
+      this.lists = ((data.body) as any).Data;
+    },
+    (err) => {
+      console.log(err);
+    });
+  }
 
   ngOnInit(): void {
   }
 
+  filterLists(dateDebut: Date, dateFin: Date) {
+      const newLists = [];
+      for (let i = 0; i < this.lists.length; i++) {
+         if ((new Date(this.lists[i].DateFin) >= dateDebut)
+              && (new Date(this.lists[i].DateFin) <= dateFin)) {
+                  newLists.push(this.lists[i]);
+         }
+    }
+      return newLists;
+  } // méthode permettant de filter les taches d'une liste
+
   filter(value) {
     this.dateDebut = this.changeFormatDate(value.dp3);
     this.dateFin = this.changeFormatDate(value.dp4);
-    const lists = this.listService.filterLists(this.dateDebut, this.dateFin);
+    const lists = this.filterLists(this.dateDebut, this.dateFin);
     this.dataSource = new MatTableDataSource(lists); // Remplissage du tableau par les données
     this.length = lists.length; // Affectation du nombre de ligne du tableau
     this.barChartData = [
@@ -93,38 +115,40 @@ export class BilanComponent implements OnInit {
 
   numberListsDoneWithLate(): number {
     let somme = 0;
-    for (let i = 0; i < this.listService.lists.length; i++) {
-          if ((this.listService.lists[i].DateFinExact <= this.dateFin) && (this.listService.lists[i].DateFinExact >= this.dateDebut)) {
-              if (this.listService.lists[i].DateFin < this.listService.lists[i].DateFinExact) {
+    for (let i = 0; i < this.lists.length; i++) {
+          if ((this.lists[i].DateFinExact <= this.dateFin) && (this.lists[i].DateFinExact >= this.dateDebut)) {
+              if (new Date(this.lists[i].DateFin) < this.lists[i].DateFinExact) {
                    somme = somme + 1;
               }
           }
     }
-    return ((somme / this.listService.lists.length) * 100);
+    console.log(somme);
+    return ((somme / this.lists.length) * 100);
   } // méthodes retourne le pourcentage de tâches réalisées en retard sur cette période donnée
 
   numberListsDoneWithoutLate(): number {
     let somme = 0;
-    for (let i = 0; i < this.listService.lists.length; i++) {
-          if ((this.listService.lists[i].DateFinExact <= this.dateFin) && (this.listService.lists[i].DateFinExact >= this.dateDebut)) {
-              if (this.listService.lists[i].DateFin >= this.listService.lists[i].DateFinExact) {
+    for (let i = 0; i < this.lists.length; i++) {
+          if ((new Date(this.lists[i].DateFinExact) <= this.dateFin) && (new Date(this.lists[i].DateFinExact) >= this.dateDebut)) {
+              if (new Date(this.lists[i].DateFin) >= new Date(this.lists[i].DateFinExact)) {
                    somme = somme + 1;
               }
           }
     }
-    return ((somme / this.listService.lists.length) * 100);
+    return ((somme / this.lists.length) * 100);
   } // méthodes retourne le pourcentage de tâches réalisées dans les temps sur cette période
 
   numberListsTodoWithLate(): number {
     let somme = 0;
-    for (let i = 0; i < this.listService.lists.length; i++) {
-      if ((this.listService.lists[i].DateFin <= this.dateFin) && (this.listService.lists[i].DateFin >= this.dateDebut)) {
-        if ((this.listService.lists[i].DateFinExact >= this.dateFin) || (this.listService.lists[i].DateFinExact === undefined)) {
+    for (let i = 0; i < this.lists.length; i++) {
+      console.log('datefin', new Date(this.lists[i].DateFin), 'datefinexact', this.lists[i].DateFinExact);
+      if ((new Date(this.lists[i].DateFin) <= this.dateFin) && (new Date(this.lists[i].DateFin) >= this.dateDebut)) {
+        if ((new Date(this.lists[i].DateFinExact) >= this.dateFin) || (this.lists[i].DateFinExact === null)) {
                somme = somme + 1;
           }
       }
     }
-    return ((somme / this.listService.lists.length) * 100);
+    return ((somme / this.lists.length) * 100);
   } // méthodes retourne le pourcentage de tâches non encore réalisées sur cette période alors que dues sur cette période
     // les taches dont les dates de réalisation supérieures à la date 2 (deuxième date limite de la période choisie)
     // les taches non encore réalisées alors que la date d'échéance est inclue dans cette période

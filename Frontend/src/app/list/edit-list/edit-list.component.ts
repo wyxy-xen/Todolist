@@ -41,10 +41,8 @@ export class EditListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('this.id', this.id);
     this.listService.getList(this.id).subscribe((data) => {
       const list = ((data.body) as any).Data;
-      console.log('list', list);
       this.NomList = list['Nom'];
       this.typeList = list['Type'];
       this.CategoryList = list['Category'];

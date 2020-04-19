@@ -30,7 +30,6 @@ export class AddListComponent implements OnInit {
   } // méthode permettant de fermer une fenetre modale
 
   onAddList(value) {
-    console.log('value', value);
     const nom = value.Nom;
     const type = value.Type;
     const category = value.Category;
@@ -40,7 +39,6 @@ export class AddListComponent implements OnInit {
     const dateFinReal = this.listService.getDateFinExact(value.Percent);
     const list = new List(nom, type, category, this.listService.changeFormatDate(value.dp3),
     this.listService.changeFormatDate(value.dp4), dateFinReal, false, isLate, value.Percent);
-    console.log('list', list);
     this.listService.addList(list).subscribe((data) => {
       console.log(data);
     }, (err) => {
