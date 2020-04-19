@@ -10,10 +10,11 @@ const app = express(); // istanciation de l'objet express afin de créer le serv
 const multer = require('./config/multer.config'); // importation du middleware de configuration de multer
 const path = require('path'); // importation du module path
 const fs = require('fs'); // importation du module fs pour la gestion des fichiers dans le dossier back-end
+const bcrypt = require('bcrypt'); // importation du module bcrypt pour cypter les mots de passe
 
 /************************ connexion à la base de données ***********************************/
 
-db.sync({ force: false }); // warning: if force is true, the database will be omitted ! please, take care !!! 
+db.sync({ force: true }); // warning: if force is true, the database will be omitted ! please, take care !!! 
 
 /****************************** test de la connexion ****************************************/
 db
@@ -158,12 +159,28 @@ app.put('/api/list/:id', (req, res, next) => {
   /****************************************** API REST du modèle user*****************************************/
 
   app.post('/api/user', (req, resp, next) => {
-    const user = new User({
-      ...req.body
-    });
-    user.save()
-      .then((data) => { resp.status(201).json({ message: 'l utilisateur est ajouté avec succès !', data: data }) })
-      .catch((err) => { resp.status(400).json("l'erreur est la suivante: ", err) });
-  }); // middleware pour traiter la requete et la réponse associées à la route post '/api/category'
+    bcrypt.hash(req.body.MPasse, 8)
+    .then((hash) => {
+      const user = new User({
+        Nom: req.body.Nom,
+        Prenom: req.body.Prenom,
+        Email: req.body.Email,
+        Login: req.body.Login,
+        MPasse: hash,
+        Role: req.body.Role
+      });
+      user.save()
+        .then((data) => { resp.status(201).json({ message: 'l utilisateur est ajouté avec succès !', data: data }) })
+        .catch((err) => {
+          resp.status(400).json({ message: 'L\'email que vous saisissez est invalide. Cet email existe déja !', err: err });
+      });
+    })
+    .catch((err) => { resp.status(500).json({ message: 'Cette erreur vient du serveur ! Veuillez re-connecter ultérieurement.', error: err }) });
+  }); // middleware pour traiter la requete et la réponse associées à la route post '/api/user'
+
+  app.post('/api/login', (req, resp, next) => {
+
+  }); // middleware pour traiter la requete et la réponse associées à la route post '/api/login'
+
 
   module.exports = app;
