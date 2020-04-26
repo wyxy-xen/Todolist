@@ -3,30 +3,33 @@
     <ul class="nav navbar-nav">
       <li ngbDropdown class="nav-item dropdown pointer">
         <a class="nav-link dropdown-toggle" ngbDropdownToggle data-toggle="dropdown" role="button" aria-expanded="false"
-          href="javascript:void(0);"> Liste</a>
+          href="javascript:void(0);" *ngIf = "isAuthentified()"> Liste</a>
         <ul id = "dropdown1" class="dropdown-menu" ngbDropdownMenu>
           <li>
-            <a class="dropdown-item" routerLink="list/todoList">Todo Liste</a>
+            <a class="dropdown-item" *ngIf = "isAuthentified()" routerLink="list/todoList">Todo Liste</a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="list/doneList">Done Liste</a>
+            <a class="dropdown-item" *ngIf = "isAuthentified()" routerLink="list/doneList">Done Liste</a>
           </li>
         </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="category">Catégories</a>
+        <a class="nav-link" *ngIf = "isAuthentified()" routerLink="category">Catégories</a>
       </li>
     </ul>
     <ul class="nav navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link" routerLink="bilan">Bilan</a>
+            <a class="nav-link" *ngIf = "isAuthentified()" routerLink="bilan">Bilan</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="login">Login</a>
+            <a class="nav-link" *ngIf = "!isAuthentified()" routerLink="login">Login</a>
           </li>
         <li class="nav-item">
-            <a class="nav-link" routerLink="signup">Sign-up</a>
+            <a class="nav-link" *ngIf = "!isAuthentified()" routerLink="signup">Sign-up</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link btn" *ngIf = "isAuthentified()" (click) = "logout()">Log-out</a>
+      </li>
     </ul>
   </nav>
   

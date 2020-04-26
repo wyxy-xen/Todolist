@@ -4,6 +4,7 @@ import { activity } from 'src/app/models/category.enum';
 import { Category } from 'src/app/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 
 @Component({
   selector: 'app-add-category',
@@ -15,7 +16,8 @@ export class AddCategoryComponent implements OnInit {
   public imagePreview: string;
   constructor(private dialogRef: MatDialogRef<AddCategoryComponent>,
               private categoryService: CategoryService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private authentificationService: AuthentificationService) { }
 
   ngOnInit(): void {
     this.thingForm = this.formBuilder.group({
@@ -48,7 +50,8 @@ export class AddCategoryComponent implements OnInit {
      const Nom = this.thingForm.get('Nom').value;
      const Type = this.thingForm.get('Type').value;
      const Photo = '';
-     const category = new Category(Nom, Type, Photo);
+     const idUser = this.authentificationService.id;
+     const category = new Category(Nom, Type, idUser, Photo);
      this.categoryService.addCategory(category, this.thingForm.get('image').value).then((data) => {
        console.log(data);
      }).catch((err) => {

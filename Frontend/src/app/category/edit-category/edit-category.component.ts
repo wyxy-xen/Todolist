@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from 'src/app/models/category.model';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 
 @Component({
   selector: 'app-edit-category',
@@ -19,7 +20,8 @@ export class EditCategoryComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<EditCategoryComponent>,
               private categoryService: CategoryService,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private authentificationService: AuthentificationService) {
     if (data !== null) {
       this.index = data.data;
     }
@@ -49,7 +51,8 @@ export class EditCategoryComponent implements OnInit {
     const Nom = this.thingForm.get('Nom').value;
     const Type = this.thingForm.get('Type').value;
     const Photo = '';
-    const category = new Category(Nom, Type, Photo);
+    const idUser = this.authentificationService.id;
+    const category = new Category(Nom, Type, idUser, Photo);
     this.categoryService.editCategory(this.index, category, this.thingForm.get('image').value).subscribe((data) => {
       console.log(data);
     },

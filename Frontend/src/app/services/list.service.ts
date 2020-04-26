@@ -11,8 +11,8 @@ export class ListService {
   hostAdress = 'http://localhost:4000/api/list';
   constructor(private http: HttpClient) { }
 
-  getLists() {
-    return this.http.get(this.hostAdress, {observe: 'response'});
+  getLists(id: any) {
+    return this.http.get('http://localhost:4000/api/lists' + '/' + id, {observe: 'response'});
   } // méthode permettant de récupérer le tableau de taches
 
   getList(id: any) {
@@ -75,7 +75,9 @@ export class ListService {
         }
       }
     } else if (type === spot['1']) {
-      if ((actualDate <= date2) && (percent <= 25)) {
+      if ((percent >= 100)) {
+        return 'réalisée';
+      } else if ((actualDate <= date2) && (percent <= 25)) {
         return 'en avance';
       } else if ((actualDate <= date2) && (percent > 25)) {
         return 'réalisée';
@@ -97,6 +99,8 @@ export class ListService {
         return 'en avance';
       } else if ((actualDate > date4) && (actualDate <= date5) && (percent >= 100)) {
         return 'réalisée';
+      } else if ((actualDate > date5) && (percent < 100)) {
+        return 'en retard';
       }
     }
   }

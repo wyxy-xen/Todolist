@@ -1,4 +1,5 @@
 /********** importation des librairies et des frameworks ***********************************/
+
 const express = require('express'); // importation de micro-framework express
 const db = require("./models/index"); // importation de framework sequelize
 const bodyparser = require('body-parser'); // importation de package permettant de transformer le corps de la requete en objet json
@@ -11,10 +12,11 @@ const multer = require('./config/multer.config'); // importation du middleware d
 const path = require('path'); // importation du module path
 const fs = require('fs'); // importation du module fs pour la gestion des fichiers dans le dossier back-end
 const bcrypt = require('bcrypt'); // importation du module bcrypt pour cypter les mots de passe
+const jsonwebtoken = require('jsonwebtoken'); // importation du module jsonwebtoken pour cérer un token d'authentification
 
 /************************ connexion à la base de données ***********************************/
 
-db.sync({ force: true }); // warning: if force is true, the database will be omitted ! please, take care !!! 
+db.sync({ force: false }); // warning: if force is true, the database will be omitted ! please, take care !!! 
 
 /****************************** test de la connexion ****************************************/
 db
@@ -51,8 +53,8 @@ app.post('/api/category', multer, (req, resp, next) => {
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); // middleware pour télécharger l'image du serveur
 
-app.get('/api/category', (req, res, next) => {
-  Category.findAll()
+app.get('/api/categories/:id', (req, res, next) => {
+  Category.findAll({where: {idUser: req.params.id}})
     .then((categories) => { res.status(200).json({ message: 'les catégories sont téléchargées avec succès !', Data: categories }) })
     .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requete et la réponse associées à la route get '/api/category'
@@ -106,19 +108,18 @@ app.put('/api/category/:id', multer, (req, res, next) => {
 
 /****************************************** API REST du modèle list*****************************************/
 
-app.get('/api/list', (req, res, next) => {
-  List.findAll()
+app.get('/api/lists/:id', (req, res, next) => {
+  List.findAll({
+    where: { idUser: req.params.id }
+  })
     .then((categories) => { res.status(200).json({ message: 'les taches sont téléchargées avec succès !', Data: categories }) })
     .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requete et la réponse associées à la route get '/api/list'
 
-app.post('/api/list', (req, resp, next) => {
-  const list = new List({
-    ...req.body
-  });
-  list.save()
-    .then((data) => { resp.status(201).json({ message: 'la tache est ajoutée avec succès !', data: data }) })
-    .catch((err) => { resp.status(400).json("l'erreur est la suivante: ", err) });
+app.post('/api/list', (req, res, next) => {
+  List.create(req.body)
+  .then((data) => { res.status(201).json({ message: 'la tache est ajoutée avec succès !', data: data }) })
+  .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requete et la réponse associées à la route post '/api/category'
 
 app.delete('/api/list/:id', (req, res, next) => {
@@ -178,9 +179,33 @@ app.put('/api/list/:id', (req, res, next) => {
     .catch((err) => { resp.status(500).json({ message: 'Cette erreur vient du serveur ! Veuillez re-connecter ultérieurement.', error: err }) });
   }); // middleware pour traiter la requete et la réponse associées à la route post '/api/user'
 
-  app.post('/api/login', (req, resp, next) => {
-
+  app.post('/api/login', (req, res, next) => {
+    const SECRET_KEY = 'aagethrud812d8d2dhdydbd5d4d2d';
+    User.findOne({
+      where: { Email: req.body.Email }
+    }).then((user) => {
+      if (!user) {
+        return res.status(401).json({ message: 'Cet email n\'existe pas ! Veuillez vérifier votre adresse email.' });
+      } else {
+        bcrypt.compare(req.body.MPasse, user.MPasse)
+        .then((valid) => {
+            if (!valid) {
+              return res.status(401).json({ message: 'Ce mot de passe ne correspond pas à cet email ! Veuillez vérifier votre mot de passe.' });
+            } else {
+              return res.status(200).json({
+                id: user.id,
+                token: jsonwebtoken.sign(
+                    { id: user.id },
+                    SECRET_KEY,
+                    { expiresIn: '24h' }
+                )
+            });
+            }
+        })
+        .catch((err) => res.status(500).json({ message: 'Cette erreur vient du serveur ! Veuillez re-connecter ultérieurement !' }))
+      }
+    }
+    ).catch((err) => res.status(500).json({ message: 'Cette erreur vient du serveur ! Veuillez re-connecter ultérieurement !' }));
   }); // middleware pour traiter la requete et la réponse associées à la route post '/api/login'
-
 
   module.exports = app;

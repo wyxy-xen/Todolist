@@ -9,8 +9,8 @@ export class CategoryService {
   hostAdress = 'http://localhost:4000/api/category';
   constructor(private http: HttpClient) { }
 
-  getCategories() {
-    return this.http.get(this.hostAdress, {observe: 'response'});
+  getCategories(id: any) {
+    return this.http.get('http://localhost:4000/api/categories' + '/' + id, {observe: 'response'});
   } // méthode permettant de récupérer le tableau de catégories
 
   getCategory(index: number) {
@@ -45,4 +45,12 @@ export class CategoryService {
       thingData.append('thing', JSON.stringify(category));
       return this.http.put(this.hostAdress + '/' + index, thingData);
   } // méthode permettant de modifier une catégorie dans le tableau de catégories
+
+  getIdfromCategory(Nom: string, categories: Category[]) {
+    for ( let i = 0; i < categories.length; i++) {
+      if (categories[i].Nom === Nom) {
+        return categories[i]['id'];
+      }
+    }
+ } // méthode permettant de connaitre id de la catégorie en sachant son nom
 }

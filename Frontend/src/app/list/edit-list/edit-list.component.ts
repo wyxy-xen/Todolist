@@ -5,6 +5,7 @@ import { List } from 'src/app/models/list.model';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from 'src/app/models/category.model';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 
 @Component({
   selector: 'app-edit-list',
@@ -27,12 +28,12 @@ export class EditListComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<EditListComponent>,
               private listService: ListService,
               private categoryService: CategoryService,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private authentificationService: AuthentificationService) {
     if (data !== null) {
       this.id = data.data;
     }
-    this.categoryService.getCategories().subscribe((info) => {
-      console.log(info);
+    this.categoryService.getCategories(this.authentificationService.id).subscribe((info) => {
       this.categories = ((info.body) as any).Data;
     },
     (err) => {
@@ -45,7 +46,12 @@ export class EditListComponent implements OnInit {
       const list = ((data.body) as any).Data;
       this.NomList = list['Nom'];
       this.typeList = list['Type'];
-      this.CategoryList = list['Category'];
+      this.categoryService.getCategory(list['idCategory']).subscribe((info) => {
+        this.CategoryList = ((info.body) as any).Data.Nom;
+      },
+      (err) => {
+        console.log(err);
+      });
       this.DateDebutList = this.changeDateToNgbDateStruct(new Date(list['DateDebut']));
       this.DateFinList = this.changeDateToNgbDateStruct(new Date(list['DateFin']));
       this.PercentList = list['Percent'];
@@ -71,14 +77,16 @@ export class EditListComponent implements OnInit {
   onEditList(value) {
     const Nom = value.Nom;
     const Type = value.Type;
-    const Category = value.Category;
     const IsDone = this.isDone;
     const Percent = value.Percent;
     const isLate = this.listService.getIsLate(this.listService.changeFormatDate(value.dp3),
                                               this.listService.changeFormatDate(value.dp4), value.Percent, Type);
     const dateFinReal = this.listService.getDateFinExact(value.Percent);
-    const list = new List(Nom, Type, Category, this.changeNgbDateStructToDate(value.dp3),
-                          this.changeNgbDateStructToDate(value.dp4), dateFinReal, IsDone, isLate, Percent);
+    const idCategory = this.categoryService.getIdfromCategory(value.Category, this.categories);
+    const idUser = this.authentificationService.id;
+    const list = new List(Nom, Type, this.changeNgbDateStructToDate(value.dp3),
+                          this.changeNgbDateStructToDate(value.dp4), dateFinReal, IsDone, isLate, Percent, idCategory, idUser);
+    console.log('list', list, value, this.CategoryList);
     this.listService.editList(this.id, list).subscribe((data) => {
         console.log(data);
     },

@@ -3,6 +3,7 @@ import { ListService } from 'src/app/services/list.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Options } from 'ng5-slider';
 import { spot } from 'src/app/models/list.enum';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-details-list',
@@ -58,6 +59,7 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
 
   constructor(private dialogRef: MatDialogRef<DetailsListComponent>,
               private listService: ListService,
+              private categoryService: CategoryService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     if (data !== null) {
       this.id = data.data;
@@ -78,7 +80,12 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
       const list = ((data.body) as any).Data;
       this.nomList = list['Nom'];
       this.typeList = list['Type'];
-      this.categoryList = list['Category'];
+      this.categoryService.getCategory(list['idCategory']).subscribe((info) => {
+        this.categoryList = ((info.body) as any).Data.Nom;
+      },
+      (err) => {
+        console.log(err);
+      });
       this.dateDebutList = list['DateDebut'];
       this.dateFinRList = list['DateFinExact'];
       this.dateFinList = list['DateFin'];

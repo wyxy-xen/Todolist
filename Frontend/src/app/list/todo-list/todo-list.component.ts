@@ -9,6 +9,8 @@ import { DeleteListComponent } from '../delete-list/delete-list.component';
 import { EditListComponent } from '../edit-list/edit-list.component';
 import { DetailsListComponent } from '../details-list/details-list.component';
 import { List } from 'src/app/models/list.model';
+import { CategoryService } from 'src/app/services/category.service';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -33,7 +35,9 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   } // tri
   constructor(private listService: ListService,
-              private matDialog: MatDialog) {
+              private matDialog: MatDialog,
+              private categoryService: CategoryService,
+              private authentificationService: AuthentificationService) {
   }
 
   functionToMaintainCheckedList(list) {
@@ -61,11 +65,18 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   updateData() {
-    this.listService.getLists().subscribe((data) => {
+    this.listService.getLists(this.authentificationService.id).subscribe((data) => {
       const lists = ((data.body) as any).Data;
       const newLists: List[] = [];
       for (let i = 0; i < lists.length; i++) {
-        lists[i]['Action'] = i;
+        this.categoryService.getCategory(lists[i].idCategory).subscribe((info) => {
+          lists[i]['Category'] =  ((info.body) as any).Data.Nom;
+          lists[i]['Action'] = i;
+          delete lists[i].idCategory;
+        },
+        (err) => {
+          console.log(err);
+        });
         // tslint:disable-next-line: no-string-literal
         if (lists[i].IsDone === false) {
           // ajout de l'espace entre les deux boutons

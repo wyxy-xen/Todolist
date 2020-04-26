@@ -23,6 +23,7 @@
                 <label class="control-label">Catégorie: </label>
                 &nbsp;&nbsp;
                 <select class="form-control form-control-sm" name="Category" [(ngModel)] = "CategoryList" required>
+                    <option value="" disabled>None</option>
                     <option *ngFor="let category of categories">{{category.Nom}}</option>
                 </select>
             </div>
@@ -57,7 +58,7 @@
         <footer id="modal-footer">
             <br>
             <button type="button" class="btn btn-danger float-left" (click)="closeModal()">Annuler</button>
-            <button type="submit" class="btn btn-success float-right" [disabled] = "!f.valid">Modifier</button>
+            <button type="submit" class="btn btn-success float-right" [disabled] = "f.invalid">Modifier</button>
         </footer>
     </form>
 </div>

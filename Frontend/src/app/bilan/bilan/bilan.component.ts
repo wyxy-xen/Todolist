@@ -7,6 +7,8 @@ import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import swal from 'sweetalert2';
 import { List } from 'src/app/models/list.model';
+import { CategoryService } from 'src/app/services/category.service';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 
 @Component({
   selector: 'app-bilan',
@@ -76,9 +78,10 @@ export class BilanComponent implements OnInit {
   dateFin: Date;
   lists: List[];
 
-  constructor(private listService: ListService) {
-    this.listService.getLists().subscribe((data) => {
-      console.log(data);
+  constructor(private listService: ListService,
+              private categoryService: CategoryService,
+              private authentificationService: AuthentificationService) {
+    this.listService.getLists(this.authentificationService.id).subscribe((data) => {
       this.lists = ((data.body) as any).Data;
     },
     (err) => {
@@ -89,23 +92,30 @@ export class BilanComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  filterLists(dateDebut: Date, dateFin: Date) {
-      const newLists = [];
+  filterLists(dateDebut: Date, dateFin: Date): any {
+    return new Promise((resolve, reject) => {
+      const newLists: any[] = [];
       for (let i = 0; i < this.lists.length; i++) {
-         if ((new Date(this.lists[i].DateFin) >= dateDebut)
-              && (new Date(this.lists[i].DateFin) <= dateFin)) {
-                  newLists.push(this.lists[i]);
-         }
-    }
-      return newLists;
+        if ((new Date(this.lists[i].DateFin) >= dateDebut)
+             && (new Date(this.lists[i].DateFin) <= dateFin)) {
+               this.categoryService.getCategory(this.lists[i].idCategory).subscribe((info) => {
+                 this.lists[i]['Category'] = ((info.body) as any).Data.Nom;
+               });
+        }
+        newLists.push(this.lists[i]);
+      }
+      resolve([...newLists]);
+   });
   } // méthode permettant de filter les taches d'une liste
 
   filter(value) {
     this.dateDebut = this.changeFormatDate(value.dp3);
     this.dateFin = this.changeFormatDate(value.dp4);
-    const lists = this.filterLists(this.dateDebut, this.dateFin);
-    this.dataSource = new MatTableDataSource(lists); // Remplissage du tableau par les données
-    this.length = lists.length; // Affectation du nombre de ligne du tableau
+    this.filterLists(this.dateDebut, this.dateFin).then((info) => {
+      const lists = info;
+      this.dataSource = new MatTableDataSource(lists); // Remplissage du tableau par les données
+      this.length = lists.length; // Affectation du nombre de ligne du tableau
+    });
     this.barChartData = [
       { data: [this.numberListsDoneWithoutLate()], label: 'Série A' }, // tâches réalisées dans les temps sur cette période
       { data: [this.numberListsDoneWithLate()], label: 'Série B' }, // tâches réalisées en retard sur cette période donnée
@@ -116,13 +126,12 @@ export class BilanComponent implements OnInit {
   numberListsDoneWithLate(): number {
     let somme = 0;
     for (let i = 0; i < this.lists.length; i++) {
-          if ((this.lists[i].DateFinExact <= this.dateFin) && (this.lists[i].DateFinExact >= this.dateDebut)) {
-              if (new Date(this.lists[i].DateFin) < this.lists[i].DateFinExact) {
+          if ((new Date(this.lists[i].DateFinExact) <= this.dateFin) && (new Date(this.lists[i].DateFinExact) >= this.dateDebut)) {
+             if (new Date(this.lists[i].DateFin) < new Date(this.lists[i].DateFinExact)) {
                    somme = somme + 1;
-              }
+             }
           }
     }
-    console.log(somme);
     return ((somme / this.lists.length) * 100);
   } // méthodes retourne le pourcentage de tâches réalisées en retard sur cette période donnée
 
@@ -141,7 +150,6 @@ export class BilanComponent implements OnInit {
   numberListsTodoWithLate(): number {
     let somme = 0;
     for (let i = 0; i < this.lists.length; i++) {
-      console.log('datefin', new Date(this.lists[i].DateFin), 'datefinexact', this.lists[i].DateFinExact);
       if ((new Date(this.lists[i].DateFin) <= this.dateFin) && (new Date(this.lists[i].DateFin) >= this.dateDebut)) {
         if ((new Date(this.lists[i].DateFinExact) >= this.dateFin) || (this.lists[i].DateFinExact === null)) {
                somme = somme + 1;

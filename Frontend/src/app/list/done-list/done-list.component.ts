@@ -8,6 +8,7 @@ import { List } from 'src/app/models/list.model';
 import { DeleteListComponent } from '../delete-list/delete-list.component';
 import { DetailsListComponent } from '../details-list/details-list.component';
 import { element } from 'protractor';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 
 @Component({
   selector: 'app-done-list',
@@ -33,7 +34,8 @@ export class DoneListComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   } // tri
   constructor(private listService: ListService,
-              private matDialog: MatDialog) {
+              private matDialog: MatDialog,
+              private authentificationService: AuthentificationService) {
   }
 
 
@@ -49,7 +51,7 @@ export class DoneListComponent implements OnInit, AfterViewInit {
   }
 
   updateData() {
-    this.listService.getLists().subscribe((data) => {
+    this.listService.getLists(this.authentificationService.id).subscribe((data) => {
       const lists = ((data.body) as any).Data;
       const newLists: List[] = [];
       for (let i = 0; i < lists.length; i++) {

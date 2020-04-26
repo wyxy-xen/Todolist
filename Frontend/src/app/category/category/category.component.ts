@@ -8,6 +8,7 @@ import { AddCategoryComponent } from '../add-category/add-category.component';
 import { DeleteCategoryComponent } from '../delete-category/delete-category.component';
 import { EditCategoryComponent } from '../edit-category/edit-category.component';
 import { DetailsCategoryComponent } from '../details-category/details-category.component';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 
 @Component({
   selector: 'app-category',
@@ -31,13 +32,17 @@ export class CategoryComponent implements OnInit {
     this.sort = content;
     this.dataSource.sort = this.sort;
   } // tri
-  constructor(private categoryService: CategoryService, private matDialog: MatDialog) {
+  constructor(private categoryService: CategoryService,
+              private matDialog: MatDialog,
+              private authentificationService: AuthentificationService) {
     this.updateData();
   }
 
   updateData() {
-    this.categoryService.getCategories().subscribe((data) => {
+    console.log(this.authentificationService.id);
+    this.categoryService.getCategories(this.authentificationService.id).subscribe((data) => {
       const categories = ((data.body) as any).Data;
+      console.log('categories', categories);
       this.length = categories.length;
       for (let i = 0; i < categories.length; i++) {
         // tslint:disable-next-line: no-string-literal

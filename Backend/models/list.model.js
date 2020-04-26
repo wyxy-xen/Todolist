@@ -1,7 +1,5 @@
 const Sequelize = require('sequelize');
 const db = require('./index');
-const Category = require('./category.model');
-const User = require('./user.model');
 
 const List = db.define('list', {
     Nom: {
@@ -9,9 +7,6 @@ const List = db.define('list', {
     },
     Type: {
         type: Sequelize.ENUM('ponctuel', 'au long cours')
-    },
-    Category: {
-        type: Sequelize.STRING
     },
     DateDebut: {
         type: Sequelize.DATE
@@ -32,8 +27,5 @@ const List = db.define('list', {
         type: Sequelize.INTEGER
     }
 });
-
-List.hasMany(Category);
-List.hasMany(User);
 
 module.exports = List;
