@@ -19,9 +19,14 @@ export class CategoryService {
 
   addCategory(category: Category, image: File) {
     return new Promise((resolve, reject) => {
-      const thingData = new FormData();
-      thingData.append('thing', JSON.stringify(category));
-      thingData.append('image', image, category.Nom);
+      let thingData: any;
+      if (image === null) {
+        thingData = category;
+      } else {
+        thingData = new FormData();
+        thingData.append('thing', JSON.stringify(category));
+        thingData.append('image', image, category.Nom);
+      }
       this.http.post(this.hostAdress, thingData).subscribe(
         (response) => {
           resolve(response);

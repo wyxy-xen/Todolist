@@ -23,7 +23,7 @@ export class AddCategoryComponent implements OnInit {
     this.thingForm = this.formBuilder.group({
       Nom: [null, Validators.required],
       Type: [activity['0'], Validators.required],
-      image: [null, Validators.required]
+      image: [null]
     });
    }
 
@@ -45,6 +45,11 @@ export class AddCategoryComponent implements OnInit {
     };
     reader.readAsDataURL(file);
   }
+
+  validForm() {
+    return this.thingForm.status === 'INVALID';
+  }
+
 
   onAddCategory( ) {
      const Nom = this.thingForm.get('Nom').value;

@@ -15,6 +15,10 @@ h3 {
     font-size: calc(24px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
 }
 
+input {
+    width: 100%;
+}
+
 .label-file {
     cursor: pointer;
     color: #00b1ca;

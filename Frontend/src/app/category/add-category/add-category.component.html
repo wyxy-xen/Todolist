@@ -3,23 +3,31 @@
         <h3>Ajouter une catégorie</h3>
     </header>
     <br>
-    <form [formGroup]="thingForm">
+    <form [formGroup]="thingForm" (ngSubmit)="onAddCategory()">
         <section id="modal-body">
             <div class="form-group">
                 <label class="control-label">Nom: </label>
                 &nbsp;&nbsp;
-                <input type="text" class="form-control form-control-sm" formControlName="Nom"
-                    placeholder="Entrez le nom de catégorie" required>
+                <div class="d-flex flex-column" style = "flex-grow: 1;">
+                    <input type="text" class="form-control form-control-sm" formControlName="Nom"
+                        placeholder="Entrez le nom de catégorie" required>
+                    <mat-error class="align-self-start"
+                        *ngIf="thingForm.controls.Nom?.invalid && (thingForm.controls.Nom.dirty || thingForm.controls.Nom.touched)">
+                        <div *ngIf="thingForm.controls.Nom.errors.required">
+                            Nom est obligatoire.
+                        </div>
+                    </mat-error>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label">Type: </label>
                 &nbsp;&nbsp;
-                <select class="form-control form-control-sm" formControlName="Type" >
+                <select class="form-control form-control-sm" formControlName="Type" required>
                     <option>personnel</option>
                     <option>travail</option>
                 </select>
             </div>
-            <div class = "photo-group">
+            <div class="photo-group">
                 <button class="btn btn-success" type="button" (click)="filePicker.click()">Ajouter image</button>
                 <input type="file" #filePicker (change)="onImagePick($event)">
                 <div class="image-preview" *ngIf="imagePreview">
@@ -30,7 +38,7 @@
         <footer id="modal-footer">
             <br>
             <button type="button" class="btn btn-danger float-left" (click)="closeModal()">Annuler</button>
-            <button class="btn btn-success float-right" (click) = "onAddCategory()">Ajouter</button>
+            <button type="submit" class="btn btn-success float-right" [disabled]="validForm()">Ajouter</button>
         </footer>
     </form>
 </div>

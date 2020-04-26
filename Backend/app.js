@@ -41,11 +41,23 @@ app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
 /****************************************** API REST du modèle category*****************************************/
 
 app.post('/api/category', multer, (req, resp, next) => {
-  const thingObject = JSON.parse(req.body.thing);
-  const category = new Category({
-    ...thingObject,
-    imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-  });
+  let category;
+  console.log(req.body.image);
+  if (req.body.image !== undefined) {
+    const thingObject = JSON.parse(req.body.thing);
+    category = new Category({
+      ...thingObject,
+      imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    });
+  } else {
+    category = new Category({
+      Nom: req.body.Nom,
+      Type: req.body.Type,
+      Photo: req.body.Photo,
+      imageURL: undefined,
+      idUser: req.body.idUser,
+    });
+  }
   category.save()
     .then((data) => { resp.status(201).json({ message: 'la catégorie est ajoutée avec succès !', data: data }) })
     .catch((err) => { resp.status(400).json("l'erreur est la suivante: ", err) });
@@ -63,13 +75,18 @@ app.delete('/api/category/:id', (req, res, next) => {
   Category.findOne({
     where: { id: req.params.id }
   }).then((category) => {
-    const filename = category.imageURL.split('/images/')[1];
-    fs.unlink(`images/${filename}`, () => {
-      return Category.destroy({ where: { id: req.params.id } })
-        .then(() => { res.status(200).json({ message: 'la catégorie est supprimée avec succès !' }) })
-        .catch((err) => { res.status(400).json({ err }) });
-    });
-
+    let object = Category.destroy({ where: { id: req.params.id } })
+    .then(() => { res.status(200).json({ message: 'la catégorie est supprimée avec succès !' }) })
+    .catch((err) => { res.status(400).json({ err }) });
+    if (category.dataValues.imageURL === null) {
+      return object;
+    } else {
+      const filename = category.imageURL.split('/images/')[1];
+      fs.unlink(`images/${filename}`, () => {
+        return object;
+      });
+  
+    }
   })
     .catch((err) => {
       res.status(500).json({ err });
