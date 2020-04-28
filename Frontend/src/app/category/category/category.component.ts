@@ -9,6 +9,7 @@ import { DeleteCategoryComponent } from '../delete-category/delete-category.comp
 import { EditCategoryComponent } from '../edit-category/edit-category.component';
 import { DetailsCategoryComponent } from '../details-category/details-category.component';
 import { AuthentificationService } from 'src/app/services/authentification.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-category',
@@ -24,6 +25,7 @@ export class CategoryComponent implements OnInit {
 
   private paginator: MatPaginator;
   private sort: any;
+  subscriptionGetCategories: Subscription;
   @ViewChild(MatPaginator, { static: false }) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.dataSource.paginator = this.paginator;
@@ -39,7 +41,7 @@ export class CategoryComponent implements OnInit {
   }
 
   updateData() {
-    this.categoryService.getCategories(this.authentificationService.id).subscribe((data) => {
+    this.subscriptionGetCategories = this.categoryService.getCategories(this.authentificationService.id).subscribe((data) => {
       const categories = ((data.body) as any).Data;
       this.length = categories.length;
       for (let i = 0; i < categories.length; i++) {

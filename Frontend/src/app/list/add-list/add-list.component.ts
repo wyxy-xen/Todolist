@@ -18,9 +18,9 @@ export class AddListComponent implements OnInit {
   dateDebut: Date = new Date();
   errorDate: boolean = false;
   constructor(private dialogRef: MatDialogRef<AddListComponent>,
-              private listService: ListService,
-              private categoryService: CategoryService,
-              private authentificationService: AuthentificationService) { }
+    private listService: ListService,
+    private categoryService: CategoryService,
+    private authentificationService: AuthentificationService) { }
 
   ngOnInit(): void {
     console.log(this.authentificationService.id);
@@ -36,9 +36,11 @@ export class AddListComponent implements OnInit {
 
   compareTwoDates(f) {
     if (this.listService.changeFormatDate(f.controls.dp4.value) < this.listService.changeFormatDate(f.controls.dp3.value)) {
-       this.errorDate = true;
+      this.errorDate = true;
+    } else {
+      this.errorDate = false;
     }
-}
+  }
 
   onAddList(value) {
     const nom = value.Nom;
@@ -50,7 +52,7 @@ export class AddListComponent implements OnInit {
     const idCategory = this.categoryService.getIdfromCategory(value.Category, this.categories);
     const idUser = this.authentificationService.id;
     const list = new List(nom, type, this.listService.changeFormatDate(value.dp3),
-    this.listService.changeFormatDate(value.dp4), dateFinReal, false, isLate, value.Percent, idCategory, idUser);
+      this.listService.changeFormatDate(value.dp4), dateFinReal, false, isLate, value.Percent, idCategory, idUser);
     this.listService.addList(list).subscribe((data) => {
       console.log(data);
     }, (err) => {
