@@ -42,8 +42,7 @@ app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
 
 app.post('/api/category', multer, (req, resp, next) => {
   let category;
-  console.log(req.body.image);
-  if (req.body.image !== undefined) {
+  if (req.file !== undefined) {
     const thingObject = JSON.parse(req.body.thing);
     category = new Category({
       ...thingObject,
@@ -85,7 +84,6 @@ app.delete('/api/category/:id', (req, res, next) => {
       fs.unlink(`images/${filename}`, () => {
         return object;
       });
-  
     }
   })
     .catch((err) => {
@@ -105,21 +103,25 @@ app.put('/api/category/:id', multer, (req, res, next) => {
   Category.findOne({
     where: { id: req.params.id }
   }).then((category) => {
+    let updateObject;
     if (req.file) {
-      const filename = category.imageURL.split('/images/')[1];
-      let updateObject;
-      fs.unlink(`images/${filename}`, () => {
-        updateObject = Category.update({
-          ...JSON.parse(req.body.thing),
-          imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        }, { where: { id: req.params.id } });
-      });
+      const object = Category.update({
+        ...JSON.parse(req.body.thing),
+        imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      }, { where: { id: req.params.id } });
+      if(category.imageURL !== undefined) {
+        const filename = category.imageURL.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () => {
+          updateObject = object;
+        });
+      } else {
+        updateObject = object;
+      }
     } else {
       updateObject = Category.update({ ...JSON.parse(req.body.thing) }, { where: { id: req.params.id } });
     }
     return updateObject.then(() => { res.status(200).json({ message: 'la catégorie est mise à jour avec succès !' }) })
       .catch((err) => { res.status(400).json({ err }) });
-
   });
 }); // middleware pour traiter la requete et la réponse associées à la route put '/api/category/:id'
 

@@ -16,6 +16,7 @@ export class AddListComponent implements OnInit {
   typeList: string = 'ponctuel';
   categories: Category[];
   dateDebut: Date = new Date();
+  errorDate: boolean = false;
   constructor(private dialogRef: MatDialogRef<AddListComponent>,
               private listService: ListService,
               private categoryService: CategoryService,
@@ -33,7 +34,11 @@ export class AddListComponent implements OnInit {
     this.dialogRef.close();
   } // méthode permettant de fermer une fenetre modale
 
-
+  compareTwoDates(f) {
+    if (this.listService.changeFormatDate(f.controls.dp4.value) < this.listService.changeFormatDate(f.controls.dp3.value)) {
+       this.errorDate = true;
+    }
+}
 
   onAddList(value) {
     const nom = value.Nom;

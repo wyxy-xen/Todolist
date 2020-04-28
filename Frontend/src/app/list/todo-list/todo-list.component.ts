@@ -35,21 +35,21 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   } // tri
   constructor(private listService: ListService,
-              private matDialog: MatDialog,
-              private categoryService: CategoryService,
-              private authentificationService: AuthentificationService) {
+    private matDialog: MatDialog,
+    private categoryService: CategoryService,
+    private authentificationService: AuthentificationService) {
   }
 
   functionToMaintainCheckedList(list) {
-     this.listService.changeToDoneList(list).subscribe((data) => {
-       console.log(data);
-       setTimeout(() => {
+    this.listService.changeToDoneList(list).subscribe((data) => {
+      console.log(data);
+      setTimeout(() => {
         this.updateData();
-       }, 2000);
-     },
-     (err) => {
-       console.log(err);
-     });
+      }, 2000);
+    },
+      (err) => {
+        console.log(err);
+      });
   }
 
 
@@ -70,13 +70,15 @@ export class TodoListComponent implements OnInit, AfterViewInit {
       const newLists: List[] = [];
       for (let i = 0; i < lists.length; i++) {
         this.categoryService.getCategory(lists[i].idCategory).subscribe((info) => {
-          lists[i]['Category'] =  ((info.body) as any).Data.Nom;
+          if (((info.body) as any).Data !== null) {
+            lists[i]['Category'] = ((info.body) as any).Data.Nom;
+          }
           lists[i]['Action'] = i;
           delete lists[i].idCategory;
         },
-        (err) => {
-          console.log(err);
-        });
+          (err) => {
+            console.log(err);
+          });
         // tslint:disable-next-line: no-string-literal
         if (lists[i].IsDone === false) {
           // ajout de l'espace entre les deux boutons
@@ -88,9 +90,9 @@ export class TodoListComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator = this.paginator; // mise à jour de la pagination
       this.dataSource.sort = this.sort; // mise à jour de tri
     },
-    (err) => {
-      console.log('erreur est la suivante: ', err);
-    });
+      (err) => {
+        console.log('erreur est la suivante: ', err);
+      });
   }
 
   doFilter(value: string) {

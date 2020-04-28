@@ -47,7 +47,9 @@ export class EditListComponent implements OnInit {
       this.NomList = list['Nom'];
       this.typeList = list['Type'];
       this.categoryService.getCategory(list['idCategory']).subscribe((info) => {
-        this.CategoryList = ((info.body) as any).Data.Nom;
+        if (((info.body) as any).Data !== null) {
+          this.CategoryList = ((info.body) as any).Data.Nom;
+        }
       },
       (err) => {
         console.log(err);
@@ -86,7 +88,6 @@ export class EditListComponent implements OnInit {
     const idUser = this.authentificationService.id;
     const list = new List(Nom, Type, this.changeNgbDateStructToDate(value.dp3),
                           this.changeNgbDateStructToDate(value.dp4), dateFinReal, IsDone, isLate, Percent, idCategory, idUser);
-    console.log('list', list, value, this.CategoryList);
     this.listService.editList(this.id, list).subscribe((data) => {
         console.log(data);
     },

@@ -8,8 +8,16 @@
             <div class="form-group">
                 <label class="control-label">Nom: </label>
                 &nbsp;&nbsp;
-                <input type="text" class="form-control form-control-sm" name="Nom" ngModel
-                    placeholder="Entrez le nom de tâche" required>
+                <div class="d-flex flex-column" style="flex-grow: 1;">
+                    <input type="text" class="form-control form-control-sm" name="Nom" ngModel
+                        placeholder="Entrez le nom de tâche" required>
+                    <mat-error class="align-self-start"
+                        *ngIf="f.controls.Nom?.invalid && (f.controls.Nom.dirty || f.controls.Nom.touched)">
+                        <div *ngIf="f.controls.Nom?.errors.required">
+                            Nom est obligatoire.
+                        </div>
+                    </mat-error>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label">Type: </label>
@@ -22,35 +30,75 @@
             <div class="form-group">
                 <label class="control-label">Catégorie: </label>
                 &nbsp;&nbsp;
-                <select class="form-control form-control-sm" id = "categoryList" name="Category" ngModel required>
+                <select class="form-control form-control-sm" id="categoryList" name="Category" ngModel required>
                     <option value="" disabled selected>None</option>
                     <option *ngFor="let category of categories">{{category.Nom}}</option>
                 </select>
             </div>
             <div class="form-group">
-                <label class="control-label" style="width: 30%;">Date de début: </label>
-                <input #datestart id="start_date" class="form-control" placeholder="yyyy-mm-dd" name="dp3" ngbDatepicker
-                    #dp3="ngbDatepicker" ngModel required>
+                <label class="control-label" style="width: 20%;">Date de début: </label>
+                <div class="d-flex flex-column" style="flex-grow: 1;">
+                    <input #datestart id="start_date" class="form-control" placeholder="yyyy-mm-dd" name="dp3"
+                        ngbDatepicker #dp3="ngbDatepicker" ngModel required>
+                    <mat-error class="align-self-start"
+                        *ngIf="f.controls.dp3?.invalid && (f.controls.dp3.dirty || f.controls.dp3.touched)">
+                        <div *ngIf="f.controls.dp3?.errors.required">
+                            Date de début est obligatoire.
+                        </div>
+                        <div *ngIf="f.controls.dp3.invalid">
+                            Date n'est valide
+                        </div>
+                    </mat-error>
+                </div>
                 &nbsp;
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="dp3.toggle()" type="button"></button>
+                    <button class="btn btn-outline-secondary calendar" style="height: 50%;" (click)="dp3.toggle()"
+                        type="button"></button>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label" style="width: 30%;">Date de fin: </label>
+                <label class="control-label" style="width: 15%;">Date de fin: </label>
                 &nbsp;&nbsp;
-                <input #datestart id="fin_date" class="form-control" placeholder="yyyy-mm-dd" name="dp4" ngbDatepicker
-                    #dp4="ngbDatepicker" ngModel required>
+                <div class="d-flex flex-column" style="flex-grow: 1;">
+                    <input #datestart id="fin_date" class="form-control" placeholder="yyyy-mm-dd" name="dp4"
+                        ngbDatepicker #dp4="ngbDatepicker" ngModel required (ngModelChange)="compareTwoDates(f)">
+                    <mat-error class="align-self-start"
+                        *ngIf="f.controls.dp4?.invalid && (f.controls.dp4.dirty || f.controls.dp4.touched)">
+                        <div *ngIf="f.controls.dp4?.errors.required">
+                            Date de fin est obligatoire
+                        </div>
+                        <div *ngIf="f.controls.dp4.invalid">
+                            Date n'est valide
+                        </div>
+                    </mat-error>
+                    <mat-error class="align-self-start">
+                        <div *ngIf="errorDate">
+                            Date de fin doit être inférieure à la date de début
+                        </div>
+                    </mat-error>
+                </div>
                 &nbsp;
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="dp4.toggle()" type="button"></button>
+                    <button class="btn btn-outline-secondary calendar" style="height: 50%;" (click)="dp4.toggle()"
+                        type="button"></button>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label">Pourcentage: </label>
                 &nbsp;&nbsp;
-                <input type="text" class="form-control form-control-sm" name="Percent" ngModel
-                    placeholder="Entrez le pourcentage d'avancement de tâche" required>
+                <div class="d-flex flex-column" style="flex-grow: 1;">
+                    <input type="number" class="form-control form-control-sm" name="Percent" ngModel
+                        placeholder="Entrez le pourcentage d'avancement de tâche" required rangeValidator>
+                    <mat-error class="align-self-start"
+                        *ngIf="f.controls.Percent?.invalid && (f.controls.Percent.dirty || f.controls.Percent.touched)">
+                        <div *ngIf="f.controls.Percent?.errors.required">
+                            Pourcentage est obligatoire
+                        </div>
+                        <div *ngIf="f.controls.Percent?.errors.range">
+                            Pourcentage doit etre compris entre 0 et 100.
+                        </div>
+                    </mat-error>
+                </div>
                 &nbsp;
                 <label>%</label>
             </div>
@@ -58,7 +106,7 @@
         <footer id="modal-footer">
             <br>
             <button type="button" class="btn btn-danger float-left" (click)="closeModal()">Annuler</button>
-            <button type="submit" class="btn btn-success float-right" [disabled] = "!f.valid">Ajouter</button>
+            <button type="submit" class="btn btn-success float-right" [disabled]="!f.valid">Ajouter</button>
         </footer>
     </form>
 </div>

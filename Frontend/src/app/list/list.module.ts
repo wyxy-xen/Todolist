@@ -17,9 +17,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Ng5SliderModule } from 'ng5-slider';
+import { RangeValidatorDirective } from './add-list/number.validator';
 
 @NgModule({
-  declarations: [DoneListComponent, TodoListComponent, DeleteListComponent, DetailsListComponent, EditListComponent, AddListComponent],
+  declarations: [
+    DoneListComponent,
+    TodoListComponent,
+    DeleteListComponent,
+    DetailsListComponent,
+    EditListComponent,
+    AddListComponent,
+    RangeValidatorDirective
+  ],
   imports: [
     CommonModule,
     MatTableModule,

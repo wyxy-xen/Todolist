@@ -35,12 +35,19 @@ export class EditCategoryComponent implements OnInit {
       this.imagePreview = category["imageURL"];
       this.thingForm.patchValue({ Nom: this.nomCategory });
       this.thingForm.patchValue({ Type: this.typeCategory });
+    },
+    (err) => {
+      console.log(err);
     }); // initialisation de formulaire
     this.thingForm = this.formBuilder.group({
       Nom: [null , Validators.required],
       Type: [null, Validators.required],
-      image: [null, Validators.required]
+      image: [null]
   }); // création de formulaire
+  }
+
+  validForm() {
+    return this.thingForm.status === 'INVALID';
   }
 
   closeModal() {

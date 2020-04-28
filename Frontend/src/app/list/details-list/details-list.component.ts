@@ -81,7 +81,9 @@ export class DetailsListComponent implements OnInit, AfterViewInit {
       this.nomList = list['Nom'];
       this.typeList = list['Type'];
       this.categoryService.getCategory(list['idCategory']).subscribe((info) => {
-        this.categoryList = ((info.body) as any).Data.Nom;
+        if (((info.body) as any).Data !== null) {
+          this.categoryList = ((info.body) as any).Data.Nom;
+        }
       },
       (err) => {
         console.log(err);

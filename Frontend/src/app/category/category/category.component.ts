@@ -39,10 +39,8 @@ export class CategoryComponent implements OnInit {
   }
 
   updateData() {
-    console.log(this.authentificationService.id);
     this.categoryService.getCategories(this.authentificationService.id).subscribe((data) => {
       const categories = ((data.body) as any).Data;
-      console.log('categories', categories);
       this.length = categories.length;
       for (let i = 0; i < categories.length; i++) {
         // tslint:disable-next-line: no-string-literal
