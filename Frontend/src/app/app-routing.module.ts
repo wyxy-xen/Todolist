@@ -5,6 +5,7 @@ import { bilanRoutes } from './bilan/bilan.routes';
 import { listRoutes } from './list/list.routes';
 import { loginRoutes } from './login/login.routes';
 import { categoryRoutes } from './category/category.routes';
+import { adminRoutes } from './admin/administrateur.routes';
 
 const routes: Routes = [
   ...listRoutes,
@@ -13,6 +14,7 @@ const routes: Routes = [
   ...loginRoutes,
   ...bilanRoutes,
   ...listRoutes,
+  ...adminRoutes,
   {path: '', redirectTo: 'login' , pathMatch: 'full'}
 ];
 

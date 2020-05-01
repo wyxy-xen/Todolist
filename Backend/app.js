@@ -65,7 +65,7 @@ app.post('/api/category', multer, (req, resp, next) => {
 app.use('/images', express.static(path.join(__dirname, 'images'))); // middleware pour télécharger l'image du serveur
 
 app.get('/api/categories/:id', (req, res, next) => {
-  Category.findAll({where: {idUser: req.params.id}})
+  Category.findAll({ where: { idUser: req.params.id } })
     .then((categories) => { res.status(200).json({ message: 'les catégories sont téléchargées avec succès !', Data: categories }) })
     .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requete et la réponse associées à la route get '/api/category'
@@ -75,8 +75,8 @@ app.delete('/api/category/:id', (req, res, next) => {
     where: { id: req.params.id }
   }).then((category) => {
     let object = Category.destroy({ where: { id: req.params.id } })
-    .then(() => { res.status(200).json({ message: 'la catégorie est supprimée avec succès !' }) })
-    .catch((err) => { res.status(400).json({ err }) });
+      .then(() => { res.status(200).json({ message: 'la catégorie est supprimée avec succès !' }) })
+      .catch((err) => { res.status(400).json({ err }) });
     if (category.dataValues.imageURL === null) {
       return object;
     } else {
@@ -109,7 +109,7 @@ app.put('/api/category/:id', multer, (req, res, next) => {
         ...JSON.parse(req.body.thing),
         imageURL: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       }, { where: { id: req.params.id } });
-      if(category.imageURL !== undefined) {
+      if (category.imageURL !== undefined) {
         const filename = category.imageURL.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {
           updateObject = object;
@@ -137,8 +137,8 @@ app.get('/api/lists/:id', (req, res, next) => {
 
 app.post('/api/list', (req, res, next) => {
   List.create(req.body)
-  .then((data) => { res.status(201).json({ message: 'la tache est ajoutée avec succès !', data: data }) })
-  .catch((err) => { res.status(400).json({ err }) });
+    .then((data) => { res.status(201).json({ message: 'la tache est ajoutée avec succès !', data: data }) })
+    .catch((err) => { res.status(400).json({ err }) });
 }); // middleware pour traiter la requete et la réponse associées à la route post '/api/category'
 
 app.delete('/api/list/:id', (req, res, next) => {
@@ -174,12 +174,32 @@ app.put('/api/list/:id', (req, res, next) => {
     .catch((err) => {
       res.status(500).json({ err });
     }); // middleware pour traiter la requete et la réponse associées à la route put '/api/category/:id'
-  });
+});
 
-  /****************************************** API REST du modèle user*****************************************/
+/****************************************** API REST du modèle user*****************************************/
+app.get('/api/user', (req, res, next) => {
+  User.findAll()
+  .then((users) => { res.status(200).json({ message: 'les utilisateurs sont téléchargés avec succès !', Data: users }) })
+  .catch((err) => { res.status(400).json({ err }) });
+});
 
-  app.post('/api/user', (req, resp, next) => {
-    bcrypt.hash(req.body.MPasse, 8)
+app.put('/api/user/:id', (req, res, next) => {
+  User.findOne({
+    where: { id: req.params.id }
+  }).then((Oneuser) => {
+    if (!Oneuser) {
+      return res.status(400).json({message: 'l\'utilisateur n\'est pas défini !'})
+    } else {
+      User.update({ ...req.body }, { where: { id: req.params.id } })
+      .then((user) => { res.status(200).json({ message: 'l\'utilisateur est mise à jour avec succès !', Data: user }) })
+      .catch((err) => { res.status(500).json({ err }) });
+    }
+  })
+  .catch((err) => { res.status(500).json({ err }) });
+});
+
+app.post('/api/user', (req, resp, next) => {
+  bcrypt.hash(req.body.MPasse, 8)
     .then((hash) => {
       const user = new User({
         Nom: req.body.Nom,
@@ -193,13 +213,25 @@ app.put('/api/list/:id', (req, res, next) => {
         .then((data) => { resp.status(201).json({ message: 'l utilisateur est ajouté avec succès !', data: data }) })
         .catch((err) => {
           resp.status(400).json({ message: 'L\'email que vous saisissez est invalide. Cet email existe déja !', err: err });
-      });
+        });
     })
     .catch((err) => { resp.status(500).json({ message: 'Cette erreur vient du serveur ! Veuillez re-connecter ultérieurement.', error: err }) });
-  }); // middleware pour traiter la requete et la réponse associées à la route post '/api/user'
+}); // middleware pour traiter la requete et la réponse associées à la route post '/api/user'
 
-  app.post('/api/login', (req, res, next) => {
-    const SECRET_KEY = 'aagethrud812d8d2dhdydbd5d4d2d';
+app.post('/api/login', (req, res, next) => {
+  const SECRET_KEY = 'aagethrud812d8d2dhdydbd5d4d2d';
+  const ID_USER = 99999999999;
+  if ((req.body.Email === 'admin@todolist.com') && (req.body.MPasse === 'administrateur')) {
+    return res.status(200).json({
+      id: ID_USER,
+      role: 'admin',
+      token: jsonwebtoken.sign(
+        { id: ID_USER },
+        SECRET_KEY,
+        { expiresIn: '24h' }
+      )
+    });
+  } else {
     User.findOne({
       where: { Email: req.body.Email }
     }).then((user) => {
@@ -207,24 +239,26 @@ app.put('/api/list/:id', (req, res, next) => {
         return res.status(401).json({ message: 'Cet email n\'existe pas ! Veuillez vérifier votre adresse email.' });
       } else {
         bcrypt.compare(req.body.MPasse, user.MPasse)
-        .then((valid) => {
+          .then((valid) => {
             if (!valid) {
               return res.status(401).json({ message: 'Ce mot de passe ne correspond pas à cet email ! Veuillez vérifier votre mot de passe.' });
             } else {
               return res.status(200).json({
                 id: user.id,
+                role: user.Role,
                 token: jsonwebtoken.sign(
-                    { id: user.id },
-                    SECRET_KEY,
-                    { expiresIn: '24h' }
+                  { id: user.id },
+                  SECRET_KEY,
+                  { expiresIn: '24h' }
                 )
-            });
+              });
             }
-        })
-        .catch((err) => res.status(500).json({ message: 'Cette erreur vient du serveur ! Veuillez re-connecter ultérieurement !' }))
+          })
+          .catch((err) => res.status(500).json({ message: 'Cette erreur vient du serveur ! Veuillez re-connecter ultérieurement !' }))
       }
     }
     ).catch((err) => res.status(500).json({ message: 'Cette erreur vient du serveur ! Veuillez re-connecter ultérieurement !' }));
-  }); // middleware pour traiter la requete et la réponse associées à la route post '/api/login'
+  }
+}); // middleware pour traiter la requete et la réponse associées à la route post '/api/login'
 
-  module.exports = app;
+module.exports = app;

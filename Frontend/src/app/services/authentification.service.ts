@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 export class AuthentificationService {
   jwt: string = undefined;
   id: any = undefined;
+  ID_USER = '99999999999';
+  role: string = undefined;
   constructor() { }
 
   saveToken(token: string) {
@@ -18,12 +20,25 @@ export class AuthentificationService {
     this.loadId();
   }
 
+  saveRole(Role: string) {
+    localStorage.setItem('Role', Role);
+    this.loadRole();
+  }
+
+  isAdministrator() {
+    return ((this.id === this.ID_USER) || (this.role === 'admin'));
+  }
+
   isAuthentified() {
      return ((this.jwt !== undefined) && (this.jwt !== null));
   }
 
   loadId() {
     this.id = localStorage.getItem('id');
+  }
+
+  loadRole() {
+    this.role = localStorage.getItem('Role');
   }
 
   loadToken() {
@@ -34,6 +49,7 @@ export class AuthentificationService {
     localStorage.clear();
     this.jwt = undefined;
     this.id = undefined;
+    this.role = undefined;
   }
 
 }

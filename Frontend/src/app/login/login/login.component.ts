@@ -37,9 +37,15 @@ export class LoginComponent implements OnInit {
       (data) => {
         const id = ((data.body) as any).id;
         this.authentificationService.saveId(id);
+        const role = ((data.body) as any).role;
+        this.authentificationService.saveRole(role);
         this.authentificationService.saveToken(data.body['token']);
         console.log(data);
-        this.router.navigateByUrl('/list/todoList');
+        if (role === 'admin') {
+          this.router.navigateByUrl('/administrateur');
+        } else {
+          this.router.navigateByUrl('/list/todoList');
+        }
       },
       (err) => {
         console.log(err);

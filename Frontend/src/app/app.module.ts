@@ -12,6 +12,7 @@ import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
+import { AdministrateurModule } from './admin/administrateur.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginModule,
     SignupModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    AdministrateurModule
   ],
   providers: [ ],
   bootstrap: [AppComponent]

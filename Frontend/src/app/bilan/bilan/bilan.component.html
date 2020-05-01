@@ -3,8 +3,25 @@
 <br>
 <br>
 <br>
+<div class='filter' *ngIf = "role === 'admin'">
+    <form #f1="ngForm" (ngSubmit)="filterUser(f1.value)">
+        <div class="group-from" style="width: 1000px">
+            <label class="from">Utilisateurs: </label>
+            <div class="group-input">
+                <select  id="start_date" class="form-control form-control-sm"
+                    name="User" ngModel required>
+                    <option value = '' selected disabled>None</option>
+                    <option *ngFor = "let user of users">{{user.id}} {{user.Nom}} {{user.Prenom}}</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-sm btn-primary">Filter</button>
+    </form>
+</div>
+<br>
+<br>
 <div class='filter'>
-    <form #f="ngForm" (ngSubmit)="filter(f.value)">
+    <form #f2="ngForm" (ngSubmit)="filterDate(f2.value)">
         <div class="group-from" style="width: 500px">
             <label class="from">allant de: </label>
             <div class="group-input">

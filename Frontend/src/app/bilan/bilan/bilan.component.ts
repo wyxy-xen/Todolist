@@ -9,6 +9,8 @@ import swal from 'sweetalert2';
 import { List } from 'src/app/models/list.model';
 import { CategoryService } from 'src/app/services/category.service';
 import { AuthentificationService } from 'src/app/services/authentification.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-bilan',
@@ -77,15 +79,27 @@ export class BilanComponent implements OnInit {
   dateDebut: Date;
   dateFin: Date;
   lists: List[];
+  users: any[];
+  role: any;
 
   constructor(private listService: ListService,
               private categoryService: CategoryService,
-              private authentificationService: AuthentificationService) {
-    this.listService.getLists(this.authentificationService.id).subscribe((data) => {
-      this.lists = ((data.body) as any).Data;
+              private authentificationService: AuthentificationService,
+              private userService: UserService) {
+    this.role = this.authentificationService.role;
+    if (this.role === 'user') {
+      this.listService.getLists(this.authentificationService.id).subscribe((data1) => {
+        this.lists = ((data1.body) as any).Data;
+      },
+      (err1) => {
+        console.log(err1);
+      });
+    }
+    this.userService.getUsers().subscribe((data2) => {
+      this.users = ((data2.body) as any).Data;
     },
-    (err) => {
-      console.log(err);
+    (err2) => {
+      console.log(err2);
     });
   }
 
@@ -99,7 +113,9 @@ export class BilanComponent implements OnInit {
         if ((new Date(this.lists[i].DateFin) >= dateDebut)
              && (new Date(this.lists[i].DateFin) <= dateFin)) {
                this.categoryService.getCategory(this.lists[i].idCategory).subscribe((info) => {
-                 this.lists[i]['Category'] = ((info.body) as any).Data.Nom;
+                 if (((info.body) as any).Data !== null) {
+                  this.lists[i]['Category'] = ((info.body) as any).Data.Nom;
+                 }
                });
         }
         newLists.push(this.lists[i]);
@@ -108,7 +124,17 @@ export class BilanComponent implements OnInit {
    });
   } // méthode permettant de filter les taches d'une liste
 
-  filter(value) {
+  filterUser(value) {
+    const idUser = value.User.split(' ')[0];
+    this.listService.getLists(idUser).subscribe((data1) => {
+      this.lists = ((data1.body) as any).Data;
+    },
+    (err1) => {
+      console.log(err1);
+    });
+  } // méthode permet de filter les utilisateurs
+
+  filterDate(value) {
     this.dateDebut = this.changeFormatDate(value.dp3);
     this.dateFin = this.changeFormatDate(value.dp4);
     this.filterLists(this.dateDebut, this.dateFin).then((info) => {

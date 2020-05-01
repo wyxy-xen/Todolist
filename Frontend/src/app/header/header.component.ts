@@ -15,12 +15,17 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.authentificationService.loadToken(); // Télécharger le token à chaque chargement d'une page
     this.authentificationService.loadId(); // Télécharger le id d'utilisateur à chaque chargement d'une page
+    this.authentificationService.loadRole(); // Télécharger le role d'utilisateur à chaque chargement d'une page
   }
 
   logout() {
     this.authentificationService.logout();
     this.router.navigateByUrl('/login');
  } // méthode permettant de déconnecter de l'application
+
+ isAdministrator() {
+   return this.authentificationService.isAdministrator();
+ }
 
  isAuthentified() {
     return this.authentificationService.isAuthentified();

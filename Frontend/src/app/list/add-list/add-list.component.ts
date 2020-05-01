@@ -18,15 +18,13 @@ export class AddListComponent implements OnInit {
   dateDebut: Date = new Date();
   errorDate: boolean = false;
   constructor(private dialogRef: MatDialogRef<AddListComponent>,
-    private listService: ListService,
-    private categoryService: CategoryService,
-    private authentificationService: AuthentificationService) { }
+              private listService: ListService,
+              private categoryService: CategoryService,
+              private authentificationService: AuthentificationService) { }
 
   ngOnInit(): void {
-    console.log(this.authentificationService.id);
     this.categoryService.getCategories(this.authentificationService.id).subscribe((data) => {
       this.categories = ((data.body) as any).Data;
-      console.log('this.categories', this.categories);
     });
   }
 

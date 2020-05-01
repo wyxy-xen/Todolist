@@ -32,5 +32,5 @@ export class UserService {
 
   connection(object: any) {
     return this.http.post(this.loginAdress, object, {observe: 'response'});
-  }
+  } // méthode permettant d'accéder à l'application
 }
