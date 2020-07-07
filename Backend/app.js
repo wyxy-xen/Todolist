@@ -28,7 +28,7 @@ db
     console.error('Unable to connect to the database:', err);
   });
 
-/****************** création des middlewares pour plusieurs fonctionnalités ******************/
+/********************************** création des middlewares pour plusieurs fonctionnalités ******************/
 // middleware pour la sécurité
 app.use(cors());
 app.options('*', cors());
@@ -36,7 +36,7 @@ app.options('*', cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
 
-/****************************************** API REST *****************************************/
+/*************************************************** API REST **************************************************/
 
 /****************************************** API REST du modèle category*****************************************/
 
