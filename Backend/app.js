@@ -1,5 +1,6 @@
 /********** importation des librairies et des frameworks ***********************************/
-
+/*jslint es6 */
+"use strict";
 const express = require('express'); // importation de micro-framework express
 const db = require("./models/index"); // importation de framework sequelize
 const bodyparser = require('body-parser'); // importation de package permettant de transformer le corps de la requete en objet json
@@ -7,7 +8,7 @@ const cors = require('cors'); // importation de pachkage de sécurité cors
 const List = require('./models/list.model'); // importation du modèle list
 const Category = require('./models/category.model'); // importation du modèle catégorie
 const User = require('./models/user.model'); // importation du modéle utilisateur
-const app = express(); // istanciation de l'objet express afin de créer le serveur 
+const app = express(); // istanciation de l'objet express afin de créer le serveur
 const multer = require('./config/multer.config'); // importation du middleware de configuration de multer
 const path = require('path'); // importation du module path
 const fs = require('fs'); // importation du module fs pour la gestion des fichiers dans le dossier back-end
@@ -16,15 +17,15 @@ const jsonwebtoken = require('jsonwebtoken'); // importation du module jsonwebto
 
 /************************ connexion à la base de données ***********************************/
 
-db.sync({ force: false }); // warning: if force is true, the database will be omitted ! please, take care !!! 
+db.sync({ force: false }); // warning: if force is true, the database will be omitted ! please, take care !!!
 
 /****************************** test de la connexion ****************************************/
 db
   .authenticate()
-  .then(() => {
+  .then(function() {
     console.log('Connection has been established successfully.');
   })
-  .catch(err => {
+  .catch(function(err) {
     console.error('Unable to connect to the database:', err);
   });
 
@@ -40,7 +41,7 @@ app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
 
 /****************************************** API REST du modèle category*****************************************/
 
-app.post('/api/category', multer, (req, resp, next) => {
+app.post('/api/category', multer, function(req, resp, next) {
   let category;
   if (req.file !== undefined) {
     const thingObject = JSON.parse(req.body.thing);
@@ -166,7 +167,7 @@ app.put('/api/list/:id', (req, res, next) => {
   List.findOne({
     where: { id: req.params.id }
   })
-    .then((list) => {
+    .then(( ) => {
       List.update({ ...req.body }, { where: { id: req.params.id } })
         .then((list) => { res.status(200).json({ message: 'la tache est mise à jour avec succès !', Data: list }) })
         .catch((err) => { res.status(400).json({ err }) });

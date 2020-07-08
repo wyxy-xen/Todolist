@@ -1,3 +1,4 @@
+/*jslint node: true */
 const Sequelize = require('sequelize');
 const db = require('./index');
 const List = require('./list.model');
